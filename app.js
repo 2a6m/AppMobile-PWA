@@ -25,15 +25,15 @@ App = function()
         ship = new SceneObject(sprite, 0, mousePosition.x, mousePosition.y);
         wade.addSceneObject(ship);
 
-        // spawn enemies
-        enemyDelay = 2000; // set value depending score
-        nextEnemy = setTimeout(wade.app.spawnEnemy, enemyDelay);
-
-        // score
+        // score counter
         score = 0;
         var scoreSprite = new TextSprite(score.toString(), '32px Verdana', '#f88', 'right');
         scoreCounter = new SceneObject(scoreSprite, 0, wade.getScreenWidth() / 2 - 10, -wade.getScreenHeight() / 2 + 30);
         wade.addSceneObject(scoreCounter);
+
+        // spawn enemies
+        enemyDelay = 2000; // set value depending score
+        nextEnemy = setTimeout(wade.app.spawnEnemy, enemyDelay);
     };
 
     wade.setMainLoopCallback(function()
@@ -78,6 +78,24 @@ App = function()
             }
         }
     }, 'fire');
+
+    wade.setMainLoopCallback(function()
+    {
+        var overlapping = ship.getOverlappingObjects();
+        for (var i=0; i < overlapping.length; i++)
+        {
+            if (overlapping[i].isEnemy || overlapping[i].isEnemyBullet)
+            {
+                //wade.app.explosion(ship.getPosition());
+                wade.removeSceneObject(ship);
+                // remove functions
+                wade.setMainLoopCallback(null, 'fire');
+                wade.setMainLoopCallback(null, 'die');
+
+                // !! here exit game / return to menu !!
+            }
+        }
+    }, 'die');
 
     this.onMouseMove = function(eventData)
     {
@@ -141,6 +159,7 @@ App = function()
             var sprite = new Sprite('images/bullet-poop.png');
             var bullet = new SceneObject(sprite, 0, startX, startY);
             wade.addSceneObject(bullet);
+            bullet.isEnemyBullet = true;
             bullet.moveTo(endX, endY, 200);
 
             // delete bullet when it's finished moving
