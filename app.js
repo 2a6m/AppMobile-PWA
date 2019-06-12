@@ -8,8 +8,9 @@ App = function()
     this.load  =function()
     {
         wade.loadImage('images/ship-tux.png');
-        wade.loadImage('images/ship-apple.png');
+        wade.loadImage('images/ship-cat.png');
         wade.loadImage('images/bullet-open-source.png');
+        wade.loadImage('images/bullet-poop.png');
     };
 
     this.init = function()
@@ -74,7 +75,7 @@ App = function()
     this.spawnEnemy = function()
     {
         // create a sprite
-        var sprite = new Sprite('images/ship-apple.png');
+        var sprite = new Sprite('images/ship-cat.png');
 
         // calculate start and end coordinates
         var startX = (Math.random() - 0.5) * wade.getScreenWidth();
@@ -94,6 +95,52 @@ App = function()
             wade.removeSceneObject(this);
         };
 
+        enemy.originalStep = enemy.step;
+        enemy.step = function()
+        {
+            this.originalStep();
+            // handle rotation here
+            var enemyPosition = this.getPosition();
+            var playerPosition = ship.getPosition();
+            var angle = Math.atan2(playerPosition.y - enemyPosition.y, playerPosition.x - enemyPosition.x) - 3.141 / 2;
+            this.setRotation(angle);
+        };
+
+        enemy.fire = function()
+        {
+            var enemySize = this.getSprite().getSize();
+            var enemyPosition = this.getPosition();
+            var playerPosition = ship.getPosition();
+
+            // calculate direction
+            var dx = playerPosition.x - enemyPosition.x;
+            var dy = playerPosition.y - enemyPosition.y;
+            var length = Math.sqrt(dx * dx + dy * dy);
+            dx /= length;
+            dy /= length;
+
+            // calculate initial and final position for the bullet
+            var startX = enemyPosition.x + dx * enemySize.x / 2;
+            var startY = enemyPosition.y + dy * enemySize.y / 2;
+            var endX = startX + dx * 3000;
+            var endY = startY + dy * 3000;
+
+            // create bullet
+            var sprite = new Sprite('images/bullet-poop.png');
+            var bullet = new SceneObject(sprite, 0, startX, startY);
+            wade.addSceneObject(bullet);
+            bullet.moveTo(endX, endY, 200);
+
+            // delete bullet when it's finished moving
+            bullet.onMoveComplete = function()
+            {
+                wade.removeSceneObject(this);
+            };
+
+            // schedule next bullet
+            this.schedule(1000, 'fire');
+        };
+        enemy.schedule(500, 'fire');
         // will call next enemy
         nextEnemy = setTimeout(wade.app.spawnEnemy, enemyDelay);
     };
