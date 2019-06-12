@@ -1,10 +1,14 @@
 App = function()
 {
     var ship;
+    var nextEnemy;
+    var enemyDelay;
 
     this.load  =function()
     {
         wade.loadImage('images/ship-tux.png');
+        wade.loadImage('images/ship-apple.png');
+        wade.loadImage('images/bullet-open-source.png');
     };
 
     this.init = function()
@@ -16,6 +20,10 @@ App = function()
         var mousePosition = wade.getMousePosition();
         ship = new SceneObject(sprite, 0, mousePosition.x, mousePosition.y);
         wade.addSceneObject(ship);
+
+        // spawn enemies
+        enemyDelay = 2000; // set value depending score
+        nextEnemy = setTimeout(wade.app.spawnEnemy, enemyDelay);
     };
 
     wade.setMainLoopCallback(function()
@@ -41,5 +49,31 @@ App = function()
     this.onMouseMove = function(eventData)
     {
         ship.setPosition(eventData.screenPosition.x, eventData.screenPosition.y);
+    };
+
+    this.spawnEnemy = function()
+    {
+        // create a sprite
+        var sprite = new Sprite('images/ship-apple.png');
+
+        // calculate start and end coordinates
+        var startX = (Math.random() - 0.5) * wade.getScreenWidth();
+        var endX = (Math.random() - 0.5) * wade.getScreenWidth();
+        var startY = -wade.getScreenHeight() / 2 - sprite.getSize().y / 2;
+        var endY = -startY;
+
+        // add the object to the scene and and make it move
+        var enemy = new SceneObject(sprite, 0, startX, startY);
+        wade.addSceneObject(enemy);
+        enemy.moveTo(endX, endY, 200);
+
+        // when the enemy is finished moving, delete it
+        enemy.onMoveComplete = function()
+        {
+            wade.removeSceneObject(this);
+        };
+
+        // will call next enemy
+        nextEnemy = setTimeout(wade.app.spawnEnemy, enemyDelay);
     };
 };
