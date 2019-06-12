@@ -190,7 +190,7 @@ App = function()
 
     this.explosion = function(position)
     {
-        var animation = new Animation('images/crying-cat.png', 1, 1, 1);
+        var animation = new Animation('images/crying-cat.png', 1, 1, 5);
         var explosionSprite = new Sprite();
         explosionSprite.setSize(200, 200);
         explosionSprite.addAnimation('boom', animation);
