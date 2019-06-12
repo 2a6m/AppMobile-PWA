@@ -33,5 +33,6 @@ For detailed explanation on how things work, checkout the [CLI Readme](https://g
 serve ./
 ```
 
-[tutorial followed](http://clockworkchilli.com/tutorials/top_down_shooter.html)
+tutorial followed: http://clockworkchilli.com/tutorials/top_down_shooter.html
+
 the images are free and there were found on wikipedia, imgur, pngtree, pixabay
