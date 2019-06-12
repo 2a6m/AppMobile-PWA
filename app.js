@@ -174,7 +174,8 @@ App = function()
             };
 
             // schedule next bullet
-            this.schedule(1000, 'fire');
+            // fire rate depend on the score
+            this.schedule(1000/((score+1)/100), 'fire');
         };
         enemy.schedule(500, 'fire');
         // will call next enemy
