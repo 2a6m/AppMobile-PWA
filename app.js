@@ -22,6 +22,20 @@ App = function()
         wade.setMinScreenSize(398,708);
         wade.setMaxScreenSize(1920,1080);
 
+        // main menu
+        var clickText = new TextSprite('Click or tap to start', '32px Verdana', 'white', 'center');
+        var clickToStart = new SceneObject(clickText);
+        wade.addSceneObject(clickToStart);
+        wade.app.onMouseDown = function()
+        {
+            wade.removeSceneObject(clickToStart);
+            wade.app.startGame();
+            wade.app.onMouseDown = 0;
+        };
+    };
+
+    this.startGame = function()
+    {
         var sprite = new Sprite('images/ship-tux.png');
         var mousePosition = wade.getMousePosition();
         ship = new SceneObject(sprite, 0, mousePosition.x, mousePosition.y);
@@ -37,82 +51,85 @@ App = function()
         // enemy spawnrate depend of the score
         enemyDelay = 2000-score;
         nextEnemy = setTimeout(wade.app.spawnEnemy, enemyDelay);
-    };
 
-    wade.setMainLoopCallback(function()
-    {
-        // code to execute several times per second
-        // (time % rate == 0)
-        var nextFireTime = lastFireTime + 1 / fireRate;
-        var time = wade.getAppTime();
-        if (wade.isMouseDown() && time >= nextFireTime)
+        wade.setMainLoopCallback(function()
         {
-            lastFireTime = time;
-            var shipPosition = ship.getPosition();
-            var shipSize = ship.getSprite().getSize();
-            var sprite = new Sprite('images/bullet-open-source.png');
-            var bullet = new SceneObject(sprite, 0, shipPosition.x, shipPosition.y - shipSize.y / 2);
-            wade.addSceneObject(bullet);
-            activeBullets.push(bullet); // add bullet to array
-            bullet.moveTo(shipPosition.x, -500, 600);
-
-            bullet.onMoveComplete = function()
+            // code to execute several times per second
+            // (time % rate == 0)
+            var nextFireTime = lastFireTime + 1 / fireRate;
+            var time = wade.getAppTime();
+            if (wade.isMouseDown() && time >= nextFireTime)
             {
-                wade.removeSceneObject(this);
-                wade.removeObjectFromArray(this, activeBullets);
-            };
-        }
+                lastFireTime = time;
+                var shipPosition = ship.getPosition();
+                var shipSize = ship.getSprite().getSize();
+                var sprite = new Sprite('images/bullet-open-source.png');
+                var bullet = new SceneObject(sprite, 0, shipPosition.x, shipPosition.y - shipSize.y / 2);
+                wade.addSceneObject(bullet);
+                activeBullets.push(bullet); // add bullet to array
+                bullet.moveTo(shipPosition.x, -500, 600);
 
-        // check collision
-        for (var i=0; i < activeBullets.length; i++)
-        {
-            var colliders = activeBullets[i].getOverlappingObjects();
-            for (var j=0; j < colliders.length; j++)
-            {
-                if (colliders[j].isEnemy)
+                bullet.onMoveComplete = function()
                 {
-                    // explosion
-                    var position = colliders[j].getPosition();
-                    wade.app.explosion(position);
+                    wade.removeSceneObject(this);
+                    wade.removeObjectFromArray(this, activeBullets);
+                };
+            }
 
-                    // score
-                    score += 10;
-                    scoreCounter.getSprite().setText(score);
+            // check collision
+            for (var i=0; i < activeBullets.length; i++)
+            {
+                var colliders = activeBullets[i].getOverlappingObjects();
+                for (var j=0; j < colliders.length; j++)
+                {
+                    if (colliders[j].isEnemy)
+                    {
+                        // explosion
+                        var position = colliders[j].getPosition();
+                        wade.app.explosion(position);
 
-                    // remove bullet and enemy
-                    wade.removeSceneObject(colliders[j]);
-                    wade.removeSceneObject(activeBullets[i]);
-                    wade.removeObjectFromArrayByIndex(i, activeBullets);
-                    break;
+                        // score
+                        score += 10;
+                        scoreCounter.getSprite().setText(score);
+
+                        // remove bullet and enemy
+                        wade.removeSceneObject(colliders[j]);
+                        wade.removeSceneObject(activeBullets[i]);
+                        wade.removeObjectFromArrayByIndex(i, activeBullets);
+                        break;
+                    }
                 }
             }
-        }
-    }, 'fire');
+        }, 'fire');
 
-    wade.setMainLoopCallback(function()
-    {
-        var overlapping = ship.getOverlappingObjects();
-        for (var i=0; i < overlapping.length; i++)
+        wade.setMainLoopCallback(function()
         {
-            if (overlapping[i].isEnemy || overlapping[i].isEnemyBullet)
+            var overlapping = ship.getOverlappingObjects();
+            for (var i=0; i < overlapping.length; i++)
             {
-                //explosionSprite
-                wade.app.explosion(ship.getPosition());
-                wade.removeSceneObject(ship);
-                // remove functions
-                wade.setMainLoopCallback(null, 'fire');
-                wade.setMainLoopCallback(null, 'die');
-
-                // !! here exit game / return to menu !!
-                setTimeout(function()
+                if (overlapping[i].isEnemy || overlapping[i].isEnemyBullet)
                 {
-                    wade.clearScene();
-                    clearTimeout(nextEnemy);
-                    // go back to menu
-                }, 2000);
+                    //explosionSprite
+                    wade.app.explosion(ship.getPosition());
+                    wade.removeSceneObject(ship);
+                    // remove functions
+                    wade.setMainLoopCallback(null, 'fire');
+                    wade.setMainLoopCallback(null, 'die');
+
+                    // !! here exit game / return to menu !!
+                    setTimeout(function()
+                    {
+                        wade.clearScene();
+                        clearTimeout(nextEnemy);
+                        // go back to menu
+                        wade.app.init();
+                    }, 2000);
+                }
             }
-        }
-    }, 'die');
+        }, 'die');
+
+    };
+
 
     this.onMouseMove = function(eventData)
     {
