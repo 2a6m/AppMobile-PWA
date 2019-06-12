@@ -6,6 +6,8 @@ App = function()
     var activeBullets = [];
     var scoreCounter;
     var score;
+    var fireRate = 2;
+    var lastFireTime = 0;
 
     this.load  =function()
     {
@@ -40,8 +42,11 @@ App = function()
     {
         // code to execute several times per second
         // (time % rate == 0)
-        if (wade.isMouseDown())
+        var nextFireTime = lastFireTime + 1 / fireRate;
+        var time = wade.getAppTime();
+        if (wade.isMouseDown() && time >= nextFireTime)
         {
+            lastFireTime = time;
             var shipPosition = ship.getPosition();
             var shipSize = ship.getSprite().getSize();
             var sprite = new Sprite('images/bullet-open-source.png');
