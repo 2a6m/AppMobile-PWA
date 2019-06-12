@@ -34,7 +34,8 @@ App = function()
         wade.addSceneObject(scoreCounter);
 
         // spawn enemies
-        enemyDelay = 2000; // set value depending score
+        // enemy spawnrate depend of the score
+        enemyDelay = 2000-score;
         nextEnemy = setTimeout(wade.app.spawnEnemy, enemyDelay);
     };
 
