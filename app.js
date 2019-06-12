@@ -3,6 +3,7 @@ App = function()
     var ship;
     var nextEnemy;
     var enemyDelay;
+    var activeBullets = [];
 
     this.load  =function()
     {
@@ -37,12 +38,31 @@ App = function()
             var sprite = new Sprite('images/bullet-open-source.png');
             var bullet = new SceneObject(sprite, 0, shipPosition.x, shipPosition.y - shipSize.y / 2);
             wade.addSceneObject(bullet);
+            activeBullets.push(bullet); // add bullet to array
             bullet.moveTo(shipPosition.x, -500, 600);
 
             bullet.onMoveComplete = function()
             {
                 wade.removeSceneObject(this);
+                wade.removeObjectFromArray(this, activeBullets);
             };
+        }
+
+        // check collision
+        for (var i=0; i < activeBullets.length; i++)
+        {
+            var colliders = activeBullets[i].getOverlappingObjects();
+            for (var j=0; j < colliders.length; j++)
+            {
+                if (colliders[j].isEnemy)
+                {
+                    // remove bullet and enemy
+                    wade.removeSceneObject(colliders[j]);
+                    wade.removeSceneObject(activeBullets[i]);
+                    wade.removeObjectFromArrayByIndex(i, activeBullets);
+                    break;
+                }
+            }
         }
     }, 'fire');
 
@@ -65,6 +85,7 @@ App = function()
         // add the object to the scene and and make it move
         var enemy = new SceneObject(sprite, 0, startX, startY);
         wade.addSceneObject(enemy);
+        enemy.isEnemy = true;
         enemy.moveTo(endX, endY, 200);
 
         // when the enemy is finished moving, delete it
