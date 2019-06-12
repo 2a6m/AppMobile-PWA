@@ -4,6 +4,8 @@ App = function()
     var nextEnemy;
     var enemyDelay;
     var activeBullets = [];
+    var scoreCounter;
+    var score;
 
     this.load  =function()
     {
@@ -26,6 +28,12 @@ App = function()
         // spawn enemies
         enemyDelay = 2000; // set value depending score
         nextEnemy = setTimeout(wade.app.spawnEnemy, enemyDelay);
+
+        // score
+        score = 0;
+        var scoreSprite = new TextSprite(score.toString(), '32px Verdana', '#f88', 'right');
+        scoreCounter = new SceneObject(scoreSprite, 0, wade.getScreenWidth() / 2 - 10, -wade.getScreenHeight() / 2 + 30);
+        wade.addSceneObject(scoreCounter);
     };
 
     wade.setMainLoopCallback(function()
@@ -57,6 +65,10 @@ App = function()
             {
                 if (colliders[j].isEnemy)
                 {
+                    // score
+                    score += 10;
+                    scoreCounter.getSprite().setText(score);
+
                     // remove bullet and enemy
                     wade.removeSceneObject(colliders[j]);
                     wade.removeSceneObject(activeBullets[i]);
