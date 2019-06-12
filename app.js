@@ -71,6 +71,10 @@ App = function()
             {
                 if (colliders[j].isEnemy)
                 {
+                    // explosion
+                    var position = colliders[j].getPosition();
+                    wade.app.explosion(position);
+
                     // score
                     score += 10;
                     scoreCounter.getSprite().setText(score);
@@ -92,7 +96,8 @@ App = function()
         {
             if (overlapping[i].isEnemy || overlapping[i].isEnemyBullet)
             {
-                //wade.app.explosion(ship.getPosition());
+                //explosionSprite
+                wade.app.explosion(ship.getPosition());
                 wade.removeSceneObject(ship);
                 // remove functions
                 wade.setMainLoopCallback(null, 'fire');
@@ -181,5 +186,20 @@ App = function()
         enemy.schedule(500, 'fire');
         // will call next enemy
         nextEnemy = setTimeout(wade.app.spawnEnemy, enemyDelay);
+    };
+
+    this.explosion = function(position)
+    {
+        var animation = new Animation('images/crying-cat.png', 1, 1, 1);
+        var explosionSprite = new Sprite();
+        explosionSprite.setSize(200, 200);
+        explosionSprite.addAnimation('boom', animation);
+        var explosion = new SceneObject(explosionSprite, 0, position.x, position.y);
+        wade.addSceneObject(explosion);
+        explosion.playAnimation('boom');
+        explosion.onAnimationEnd = function()
+        {
+            wade.removeSceneObject(this);
+        };
     };
 };
