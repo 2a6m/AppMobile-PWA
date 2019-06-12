@@ -104,6 +104,12 @@ App = function()
                 wade.setMainLoopCallback(null, 'die');
 
                 // !! here exit game / return to menu !!
+                setTimeout(function()
+                {
+                    wade.clearScene();
+                    clearTimeout(nextEnemy);
+                    // go back to menu
+                }, 2000);
             }
         }
     }, 'die');
