@@ -1,9 +1,9 @@
-var cacheName = 'hello-world-page';
+var cacheName = 'test-cache-page';
 var filesToCache = [
   '/',
-  '/index.html',
-  '/firebase-tutorial.html'
-  '/style.css'
+  'index.html',
+  'firebase-tutorial.html'
+  'style.css'
 ];
 
 self.addEventListener('install', function(e) {
