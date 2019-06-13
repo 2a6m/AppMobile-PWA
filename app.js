@@ -22,9 +22,21 @@ App = function()
         wade.setMinScreenSize(398,708);
         wade.setMaxScreenSize(1920,1080);
 
+        // load highscore (connection db)
+        var shooterData = wade.retrieveLocalObject('shooterData');
+        var highScore = (shooterData && shooterData.highScore) || 0;
+
         // main menu
+        var x = document.createElement("INPUT");
+        x.setAttribute("type", "text");
         var clickText = new TextSprite('Click or tap to start', '32px Verdana', 'white', 'center');
         var clickToStart = new SceneObject(clickText);
+        clickToStart.addSprite(new TextSprite('HIGHSCORE', '32px Verdana', 'yellow', 'center'), {y: -240});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '18px Verdana', 'yellow', 'center'), {y: -180});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '18px Verdana', 'yellow', 'center'), {y: -150});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '18px Verdana', 'yellow', 'center'), {y: -120});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '18px Verdana', 'yellow', 'center'), {y: -90});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '18px Verdana', 'yellow', 'center'), {y: -60});
         wade.addSceneObject(clickToStart);
         wade.app.onMouseDown = function()
         {
@@ -115,6 +127,15 @@ App = function()
                     // remove functions
                     wade.setMainLoopCallback(null, 'fire');
                     wade.setMainLoopCallback(null, 'die');
+
+                    // highscore (connection db)
+                    var shooterData = wade.retrieveLocalObject('shooterData');
+                    var highScore = (shooterData && shooterData.highScore) || 0;
+                    if (score > highScore)
+                    {
+                        shooterData = {highScore: score};
+                        wade.storeLocalObject('shooterData', shooterData);
+                    }
 
                     // !! here exit game / return to menu !!
                     setTimeout(function()
