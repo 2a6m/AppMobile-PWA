@@ -38,13 +38,37 @@ App = function()
         */
 
         // background
-        var backSprite = new Sprite('images/galaxy-wallpaper.jpg', 10);
-        backSprite.setSize(wade.getScreenWidth(), wade.getScreenHeight());
+        var width = wade.getScreenWidth();
+        var height = wade.getScreenHeight();
+        var ratio = width/height;
+        // phone
+        if (ratio <= 0.4)
+        {
+            var backSprite = new Sprite('images/galaxy-wallpaper-phone.jpg', 10);
+            backSprite.setSize(width, height);
+        }
+        // tablet
+        else if (ratio <= 1.5)
+        {
+            var backSprite = new Sprite('images/galaxy-wallpaper-tablet.jpg', 10);
+            backSprite.setSize(width, height);
+        }
+        // laptop
+        else if (ratio <= 3)
+        {
+            var backSprite = new Sprite('images/galaxy-wallpaper.jpg', 10);
+            backSprite.setSize(width, height);
+        }
+        else {
+            var backSprite = new Sprite('images/galaxy-wallpaper.jpg', 10);
+        }
         var backObject = new SceneObject(backSprite);
         wade.addSceneObject(backObject);
 
         // stars
-        for (var i=0; i<20; i++)
+        // nb star depending width screen
+        var value = 20*(width/2000);
+        for (var i=0; i<value; i++)
         {
             var size = Math.random() * 150 + 8;
             var rotation = Math.random() * 6.28;
