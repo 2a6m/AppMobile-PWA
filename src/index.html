@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My hello world page</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="all">
+  </head>
+  <body>
+    <h1 class="vertical-container">Hello World</h1>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+
+     <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyAoL2Yay2yWUC4QipHhsoX5CCfMMXsqkbY",
+        authDomain: "retro-shooter-am4l-v2.firebaseapp.com",
+        databaseURL: "https://retro-shooter-am4l-v2.firebaseio.com",
+        projectId: "retro-shooter-am4l-v2",
+        storageBucket: "retro-shooter-am4l-v2.appspot.com",
+        messagingSenderId: "238955078830",
+        appId: "1:238955078830:web:b534872d8edbc45f"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <a href="firebase-tutorial.html"><button>Play game</button></a>
+  </body>
+</html>
