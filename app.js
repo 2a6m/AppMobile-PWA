@@ -15,6 +15,7 @@ App = function()
         wade.loadImage('images/ship-cat.png');
         wade.loadImage('images/bullet-open-source.png');
         wade.loadImage('images/bullet-poop.png');
+        wade.loadImage('images/light-beam.png');
     };
 
     this.init = function()
@@ -32,6 +33,28 @@ App = function()
         //backSprite.drawToImage('images/galaxy-wallpaper.jpg');
         var backObject = new SceneObject(backSprite);
         wade.addSceneObject(backObject);
+
+        // stars
+        for (var i=0; i<15; i++)
+        {
+            var size = Math.random() * 150 + 8;
+            var rotation = Math.random() * 6.28;
+            var posX = (Math.random() - 0.5) * wade.getScreenWidth();
+            var posY = (Math.random() - 0.5) * wade.getScreenHeight();
+            var starSprite = new Sprite('images/light-beam.png', 10);
+            starSprite.setSize(size, size);
+            var star = new SceneObject(starSprite, 0, posX, posY);
+            star.setRotation(rotation);
+            wade.addSceneObject(star);
+            star.moveTo(posX, wade.getScreenHeight() / 2 + size / 2, 20);
+            star.onMoveComplete = function()
+            {
+                var size = this.getSprite().getSize().y;
+                var posX = (Math.random() - 0.5) * wade.getScreenWidth();
+                this.setPosition(posX, -wade.getScreenHeight() / 2 - size / 2);
+                this.moveTo(posX, wade.getScreenHeight() / 2 + size / 2, 20);
+            };
+        }
 
         // main menu
         var x = document.createElement("INPUT");
