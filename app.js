@@ -16,6 +16,8 @@ App = function()
         wade.loadImage('images/bullet-open-source.png');
         wade.loadImage('images/bullet-poop.png');
         wade.loadImage('images/light-beam.png');
+
+        wade.loadAudio('sounds/meow.wav');
     };
 
     this.init = function()
@@ -30,12 +32,11 @@ App = function()
         // background
         var backSprite = new Sprite('images/galaxy-wallpaper.jpg', 10);
         backSprite.setSize(wade.getScreenWidth(), wade.getScreenHeight());
-        //backSprite.drawToImage('images/galaxy-wallpaper.jpg');
         var backObject = new SceneObject(backSprite);
         wade.addSceneObject(backObject);
 
         // stars
-        for (var i=0; i<15; i++)
+        for (var i=0; i<20; i++)
         {
             var size = Math.random() * 150 + 8;
             var rotation = Math.random() * 6.28;
@@ -46,7 +47,7 @@ App = function()
             var star = new SceneObject(starSprite, 0, posX, posY);
             star.setRotation(rotation);
             wade.addSceneObject(star);
-            star.moveTo(posX, wade.getScreenHeight() / 2 + size / 2, 20);
+            star.moveTo(rotation/2 * posX, wade.getScreenHeight() / 2 + size / 2, 20);
             star.onMoveComplete = function()
             {
                 var size = this.getSprite().getSize().y;
@@ -62,12 +63,12 @@ App = function()
         var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
         clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
         var clickToStart = new SceneObject(clickText);
-        clickToStart.addSprite(new TextSprite('HIGH SCORE', '40px Verdana', 'black', 'center'), {y: -240});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', 'black', 'center'), {y: -180});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', 'black', 'center'), {y: -150});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', 'black', 'center'), {y: -120});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', 'black', 'center'), {y: -90});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', 'black', 'center'), {y: -60});
+        clickToStart.addSprite(new TextSprite('HIGH SCORE', '40px Verdana', '#040000', 'center'), {y: -240});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -180});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -150});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -120});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -90});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -60});
         wade.addSceneObject(clickToStart);
         wade.app.onMouseDown = function()
         {
@@ -86,7 +87,7 @@ App = function()
 
         // score counter
         score = 0;
-        var scoreSprite = new TextSprite(score.toString(), '32px Verdana', '#f88', 'right');
+        var scoreSprite = new TextSprite(score.toString(), '32px Verdana', '#b73e67', 'right');
         scoreCounter = new SceneObject(scoreSprite, 0, wade.getScreenWidth() / 2 - 10, -wade.getScreenHeight() / 2 + 30);
         wade.addSceneObject(scoreCounter);
 
@@ -130,6 +131,10 @@ App = function()
                         // explosion
                         var position = colliders[j].getPosition();
                         wade.app.explosion(position);
+
+                        // bug to fix (play no sound)
+                        // sound
+                        //wade.getAudio('sounds/meow.wav').play();
 
                         // score
                         score += 10;
