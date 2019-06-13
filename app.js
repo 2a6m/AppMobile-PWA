@@ -16,6 +16,7 @@ App = function()
         wade.loadImage('images/bullet-open-source.png');
         wade.loadImage('images/bullet-poop.png');
         wade.loadImage('images/light-beam.png');
+        wade.loadImage('images/crying-cat.png');
 
         wade.loadAudio('sounds/meow.wav');
     };
@@ -28,6 +29,13 @@ App = function()
         // load highscore (connection db)
         var shooterData = wade.retrieveLocalObject('shooterData');
         var highScore = (shooterData && shooterData.highScore) || 0;
+        // database
+        /*
+        this.serverResponse = {};
+        var dataToSend = "This is the data I am sending to the server. It's not much.";
+        var url = 'http://www.example.com/doSomething.php?' + encodeURIComponent(dataToSend);
+        wade.preloadJson(url, this.serverResponse, 0, 1);
+        */
 
         // background
         var backSprite = new Sprite('images/galaxy-wallpaper.jpg', 10);
@@ -167,6 +175,16 @@ App = function()
                     // highscore (connection db)
                     var shooterData = wade.retrieveLocalObject('shooterData');
                     var highScore = (shooterData && shooterData.highScore) || 0;
+
+                    // database
+                    /*
+                    this.serverResponse = {};
+                    var object = shooterData;
+                    var dataToSend = "This is the data I am sending to the server. It's not much.";
+                    var url = 'http://www.example.com/doSomething.php?' + encodeURIComponent(dataToSend);
+                    wade.postObject(url, object, this.onServerResponse_());
+                    */
+
                     if (score > highScore)
                     {
                         shooterData = {highScore: score};
