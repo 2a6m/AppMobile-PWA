@@ -26,18 +26,25 @@ App = function()
         var shooterData = wade.retrieveLocalObject('shooterData');
         var highScore = (shooterData && shooterData.highScore) || 0;
 
+        // background
+        var backSprite = new Sprite('images/galaxy-wallpaper.jpg', 10);
+        backSprite.setSize(wade.getScreenWidth(), wade.getScreenHeight());
+        //backSprite.drawToImage('images/galaxy-wallpaper.jpg');
+        var backObject = new SceneObject(backSprite);
+        wade.addSceneObject(backObject);
+
         // main menu
         var x = document.createElement("INPUT");
         x.setAttribute("type", "text");
-        var clickText = new TextSprite('Click or tap to start', '32px Verdana', 'white', 'center');
+        var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
         clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
         var clickToStart = new SceneObject(clickText);
-        clickToStart.addSprite(new TextSprite('HIGH SCORE', '32px Verdana', 'yellow', 'center'), {y: -240});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '18px Verdana', 'yellow', 'center'), {y: -180});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '18px Verdana', 'yellow', 'center'), {y: -150});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '18px Verdana', 'yellow', 'center'), {y: -120});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '18px Verdana', 'yellow', 'center'), {y: -90});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '18px Verdana', 'yellow', 'center'), {y: -60});
+        clickToStart.addSprite(new TextSprite('HIGH SCORE', '40px Verdana', 'black', 'center'), {y: -240});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', 'black', 'center'), {y: -180});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', 'black', 'center'), {y: -150});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', 'black', 'center'), {y: -120});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', 'black', 'center'), {y: -90});
+        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', 'black', 'center'), {y: -60});
         wade.addSceneObject(clickToStart);
         wade.app.onMouseDown = function()
         {
