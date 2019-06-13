@@ -31,6 +31,15 @@
       firebase.initializeApp(firebaseConfig);
     </script>
 
+    <script>
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function() {
+                console.log('Service Worker Registered');
+          });
+      }
+    </script>
+
     <a href="firebase-tutorial.html"><button>Play game</button></a>
   </body>
 </html>
