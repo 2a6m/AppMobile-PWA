@@ -25,3 +25,14 @@ npm run test
 ```
 
 For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).
+
+## Wade Framework
+
+```bash
+# run wade server
+serve ./
+```
+
+tutorial followed: http://clockworkchilli.com/tutorials/top_down_shooter.html
+
+the images are free and there were found on wikipedia, imgur, pngtree, pixabay
