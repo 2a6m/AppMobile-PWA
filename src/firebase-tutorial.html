@@ -86,6 +86,10 @@
           //return result;
         })
       }
+
+      function removeUserData(userId) {
+        firebase.database().ref('/players/' + userId).remove();
+      }
     </script>
 
     <h1 class="vertical-container">Test of Firebase</h1>
@@ -100,6 +104,8 @@
     <button type="button" onclick="getData()">Test getData</button>
 
     <button type="button" onclick="getUserData(4)">Test getUserData 4</button>
+
+    <button type="button" onclick="removeUserData(6)">Test removeUserData 6</button>
 
   </body>
 </html>
