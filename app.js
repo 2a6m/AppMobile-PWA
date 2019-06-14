@@ -229,9 +229,9 @@ App = function()
 
     this.endGame = function()
     {
-        var scoreText = new TextSprite(score, '40px Verdana', 'white', 'center');
+        var scoreText = new TextSprite(score, '40px Verdana', 'white', 'center', 1, 1);
         var scoreObject = new SceneObject(scoreText);
-        scoreObject.addSprite(new TextSprite('YOUR SCORE : ', '40px Verdana', '#040000', 'center'), {y: -60});
+        scoreObject.addSprite(new TextSprite('YOUR SCORE : ', '40px Verdana', '#040000', 'center', 1, 1), {y: -60});
         wade.addSceneObject(scoreObject);
         wade.app.onMouseDown = function()
         {
