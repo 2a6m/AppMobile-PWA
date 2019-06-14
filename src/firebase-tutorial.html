@@ -74,16 +74,17 @@
         firebase.database().ref("/players/" + userId).once("value", function(snapshot) {
           var Key = snapshot.key;
           var Data = snapshot.val();
-          var text = '{ "user" : [' +
-          '{ "name":' + String(Data["name"]) + ', "email":' + String(Data["name"]) + ', "highScore":' + String(Data["name"]) + '}' +
-          ' ]}';
 
+          // Convert to JSON
+          var text = '{ "user" : [' +
+          '{ "name":"' + Data["name"] + '", "email":"' + Data["email"] + '", "highScore":"' + Data["highScore"] + '" }' +
+          ' ]}';
           var result = JSON.parse(text);
 
           // Test display
-          document.getElementById("data").innerHTML = Data["name"] + ", " + Data["email"] + ", " + Data["highScore"];
+          console.log(result);
 
-          return result;
+          //return result;
         })
       }
     </script>
