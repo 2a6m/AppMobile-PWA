@@ -41,7 +41,6 @@
           email: email,
           highScore : highScore
         });
-        getData();
       }
 
       function getData(){
@@ -51,6 +50,14 @@
             var childData = childSnapshot.val();
             document.getElementById("data").innerHTML = childData["name"] + ", " + childData["email"] + ", " + childData["highScore"];
           })
+        })
+      }
+
+      function getSpecificData(userId){
+        firebase.database().ref("players/" + userId).once("value", function(snapshot) {
+          var Key = snapshot.key;
+          var Data = snapshot.val();
+          document.getElementById("data").innerHTML = Data["name"] + ", " + Data["email"] + ", " + Data["highScore"];
         })
       }
     </script>
@@ -63,6 +70,8 @@
     <button type="button" onclick='writeUserData(document.getElementById("userIdField").value, document.getElementById("nameField").value, document.getElementById("emailField").value, document.getElementById("highScoreField").value)'>Submit</button>
 
     <p id="data"></p>
+
+    <button type="button" onclick="getSpecificData(4)">Test getSpecificData</button>
 
   </body>
 </html>
