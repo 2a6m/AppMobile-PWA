@@ -52,6 +52,8 @@
             var temp = [childData["name"], childData["email"], childData["highScore"]];
             window.recap.push(temp);
           })
+
+          // Test display
           var result = "";
           for (var i = 0; i < window.recap.length; i++) {
             for (var j = 0; j < window.recap[i].length; j++) {
@@ -68,10 +70,13 @@
         })
       }
 
-      function getSpecificData(userId){
+      function getUserData(userId){
         firebase.database().ref("/players/" + userId).once("value", function(snapshot) {
           var Key = snapshot.key;
           var Data = snapshot.val();
+          result = [Data["name"], Data["email"], Data["highScore"]];
+
+          // Test display
           document.getElementById("data").innerHTML = Data["name"] + ", " + Data["email"] + ", " + Data["highScore"];
         })
       }
@@ -87,6 +92,8 @@
     <p id="data"></p>
 
     <button type="button" onclick="getData()">Test getData</button>
+
+    <button type="button" onclick="getUserData(4)">Test getUserData 4</button>
 
   </body>
 </html>
