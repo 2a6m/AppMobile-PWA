@@ -51,6 +51,7 @@
             var childData = childSnapshot.val();
             var temp = [childData["name"], childData["email"], childData["highScore"]];
             window.recap.push(temp);
+            console.log(childKey);
           })
 
           // Test display
