@@ -90,8 +90,6 @@ App = function()
         }
 
         // main menu
-        var x = document.createElement("INPUT");
-        x.setAttribute("type", "text");
         var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
         clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
         var clickToStart = new SceneObject(clickText);
@@ -218,10 +216,10 @@ App = function()
                     // !! here exit game / return to menu !!
                     setTimeout(function()
                     {
-                        wade.clearScene();
+                        //wade.clearScene();
                         clearTimeout(nextEnemy);
                         // go back to menu
-                        wade.app.init();
+                        wade.app.endGame();
                     }, 2000);
                 }
             }
@@ -229,6 +227,19 @@ App = function()
 
     };
 
+    this.endGame = function()
+    {
+        var scoreText = new TextSprite(score, '40px Verdana', 'white', 'center');
+        var scoreObject = new SceneObject(scoreText);
+        scoreObject.addSprite(new TextSprite('YOUR SCORE : ', '40px Verdana', '#040000', 'center'), {y: -60});
+        wade.addSceneObject(scoreObject);
+        wade.app.onMouseDown = function()
+        {
+            wade.clearScene();
+            wade.app.init();
+            wade.app.onMouseDown = 0;
+        };
+    };
 
     this.onMouseMove = function(eventData)
     {
