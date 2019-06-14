@@ -39,7 +39,7 @@
         firebase.database().ref('/players/' + userId).set({
           name: name,
           email: email,
-          highScore : score
+          highScore : Number(score)
         });
       }
 
@@ -89,7 +89,7 @@
 
       function getHighScore(){
         // Get the fives best
-        firebase.database().ref("/players").orderByChild("highScore").limitToLast(5).once("value", function(snapshot) {
+        firebase.database().ref("/players").orderByChild("highScore").limitToLast(5).on("value", function(snapshot) {
           window.i = 0;
           window.max = 5;
           window.text = '{ "users" : ['
