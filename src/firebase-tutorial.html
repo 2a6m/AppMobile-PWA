@@ -35,7 +35,7 @@
       // Get a reference to the database service
       var database = firebase.database();
 
-      function writeUserData(userId, name, email, highScore) {
+      function writeUserData(userId, name, email, score) {
         firebase.database().ref('/players/' + userId).set({
           name: name,
           email: email,
@@ -49,7 +49,7 @@
           window.i = 0;
           window.max = snapshot.numChildren();
           window.text = '{ "users" : ['
-          snapshot.forEach(function(childSnapshot, max) {
+          snapshot.forEach(function(childSnapshot) {
             var childKey = childSnapshot.key;
             var childData = childSnapshot.val();
             window.text = window.text + '{ "name":"' + childData["name"] + '", "email":"' +
@@ -78,6 +78,32 @@
           var text = '{ "user" : [' +
           '{ "name":"' + Data["name"] + '", "email":"' + Data["email"] + '", "highScore":"' + Data["highScore"] + '" }' +
           ' ]}';
+          var result = JSON.parse(text);
+
+          // Test display
+          console.log(result);
+
+          //return result;
+        })
+      }
+
+      function getHighScore(){
+        // Get the fives best
+        firebase.database().ref("/players").orderByChild("highScore").limitToLast(5).once("value", function(snapshot) {
+          window.i = 0;
+          window.max = 5;
+          window.text = '{ "users" : ['
+          snapshot.forEach(function(childSnapshot) {
+            var childKey = childSnapshot.key;
+            var childData = childSnapshot.val();
+            window.text = window.text + '{ "name":"' + childData["name"] + '", "email":"' +
+            childData["email"] + '", "highScore":"' + childData["highScore"] + '" }';
+            window.i++;
+            if (window.i < window.max) {
+              window.text = window.text + ', ';
+            }
+          })
+          window.text = window.text + ' ]}';
           var result = JSON.parse(text);
 
           // Test display
@@ -123,6 +149,8 @@
     <button type="button" onclick="removeUserData(6)">Test removeUserData 6</button>
 
     <button type="button" onclick="updateUserHighScore(5, 5)">Test updateUserHighScore 5</button>
+
+    <button type="button" onclick="getHighScore()">Test getHighScore</button>
 
   </body>
 </html>
