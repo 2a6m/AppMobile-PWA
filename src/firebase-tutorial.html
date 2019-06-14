@@ -74,10 +74,16 @@
         firebase.database().ref("/players/" + userId).once("value", function(snapshot) {
           var Key = snapshot.key;
           var Data = snapshot.val();
-          result = [Data["name"], Data["email"], Data["highScore"]];
+          var text = '{ "user" : [' +
+          '{ "name":' + String(Data["name"]) + ', "email":' + String(Data["name"]) + ', "highScore":' + String(Data["name"]) + '}' +
+          ' ]}';
+
+          var result = JSON.parse(text);
 
           // Test display
           document.getElementById("data").innerHTML = Data["name"] + ", " + Data["email"] + ", " + Data["highScore"];
+
+          return result;
         })
       }
     </script>
