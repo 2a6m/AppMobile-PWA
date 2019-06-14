@@ -36,7 +36,7 @@
       var database = firebase.database();
 
       function writeUserData(userId, name, email, highScore) {
-        firebase.database().ref('players/' + userId).set({
+        firebase.database().ref('/players/' + userId).set({
           name: name,
           email: email,
           highScore : highScore
@@ -45,16 +45,31 @@
 
       function getData(){
         firebase.database().ref("/players").once("value", function(snapshot) {
+          window.recap = [snapshot.numChildren()]
           snapshot.forEach(function(childSnapshot) {
             var childKey = childSnapshot.key;
             var childData = childSnapshot.val();
-            document.getElementById("data").innerHTML = childData["name"] + ", " + childData["email"] + ", " + childData["highScore"];
+            var temp = [childData["name"], childData["email"], childData["highScore"]];
+            window.recap.push(temp);
           })
+          var result = "";
+          for (var i = 0; i < window.recap.length; i++) {
+            for (var j = 0; j < window.recap[i].length; j++) {
+              result = result + String(window.recap[i][j]);
+              // Replaced 2 by (window.recap[i].lenght - 1) - not working
+              if (j < 2) {
+                result = result + ", ";
+              } else {
+                result = result + "<br>";
+              }
+            }
+          }
+          document.getElementById("data").innerHTML = result;
         })
       }
 
       function getSpecificData(userId){
-        firebase.database().ref("players/" + userId).once("value", function(snapshot) {
+        firebase.database().ref("/players/" + userId).once("value", function(snapshot) {
           var Key = snapshot.key;
           var Data = snapshot.val();
           document.getElementById("data").innerHTML = Data["name"] + ", " + Data["email"] + ", " + Data["highScore"];
@@ -71,7 +86,7 @@
 
     <p id="data"></p>
 
-    <button type="button" onclick="getSpecificData(4)">Test getSpecificData</button>
+    <button type="button" onclick="getData()">Test getData</button>
 
   </body>
 </html>
