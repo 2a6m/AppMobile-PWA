@@ -45,29 +45,27 @@
 
       function getData(){
         firebase.database().ref("/players").once("value", function(snapshot) {
-          window.recap = [snapshot.numChildren()]
-          snapshot.forEach(function(childSnapshot) {
+          // Convert to JSON
+          window.i = 0;
+          window.max = snapshot.numChildren();
+          window.text = '{ "users" : ['
+          snapshot.forEach(function(childSnapshot, max) {
             var childKey = childSnapshot.key;
             var childData = childSnapshot.val();
-            var temp = [childData["name"], childData["email"], childData["highScore"]];
-            window.recap.push(temp);
-            console.log(childKey);
+            window.text = window.text + '{ "name":"' + childData["name"] + '", "email":"' +
+            childData["email"] + '", "highScore":"' + childData["highScore"] + '" }';
+            window.i++;
+            if (window.i < window.max) {
+              window.text = window.text + ', ';
+            }
           })
+          window.text = window.text + ' ]}';
+          var result = JSON.parse(text);
 
           // Test display
-          var result = "";
-          for (var i = 0; i < window.recap.length; i++) {
-            for (var j = 0; j < window.recap[i].length; j++) {
-              result = result + String(window.recap[i][j]);
-              // Replaced 2 by (window.recap[i].lenght - 1) - not working
-              if (j < 2) {
-                result = result + ", ";
-              } else {
-                result = result + "<br>";
-              }
-            }
-          }
-          document.getElementById("data").innerHTML = result;
+          console.log(result);
+
+          //return result;
         })
       }
 
