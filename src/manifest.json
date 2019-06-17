@@ -1,8 +1,8 @@
 {
   "name": "retro-shooter-am4l-v2",
   "short_name": "rsav2",
-  "theme_color": "#FF9800",
-  "background_color": "#FF9800",
+  "theme_color": "#4169E1",
+  "background_color": "#4169E1",
   "display": "standalone",
   "Scope": "/",
   "start_url": "/index.html",
