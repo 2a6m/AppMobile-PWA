@@ -133,6 +133,15 @@
       }
     </script>
 
+    <script>
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+          .then(function() {
+                console.log('Service Worker Registered');
+          });
+      }
+    </script>
+
     <h1 class="vertical-container">Test of Firebase</h1>
     <input type="text" placeholder="userId" id="userIdField">
     <input type="text" placeholder="name" id="nameField">
