@@ -10,7 +10,7 @@ self.oninstall = event => {
                 "/",
                 "/style.css",
                 "/index.html",
-                "/firebase-tutorial.html"
+                "/firebase-tutorial.html",
                 "/manifest.json",
                 "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css",
                 "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js",
