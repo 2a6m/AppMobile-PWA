@@ -92,13 +92,6 @@ function getHighScore(){
   })
 }
 
-<<<<<<< HEAD
-export function updateUserHighScore(userId, score) {
-  firebase.database().ref("/players/" + userId).once("value", function(snapshot) {
-    var Key = snapshot.key;
-    var Data = snapshot.val();
-    window.highScore = Data["highScore"];
-=======
 function updateUserHighScore(name, score) {
   firebase.database().ref("/players").once("value", function(snapshot) {
     snapshot.forEach(function(childSnapshot) {
@@ -107,7 +100,6 @@ function updateUserHighScore(name, score) {
       if (name === Data["name"]) {
         window.highScore = Data["highScore"];
         window.userId = Key;
->>>>>>> 7f168f281dd93b6a8cb43b921ecf2a5f8562670c
 
         // Test if the score is the high score
         if (score > window.highScore) {
