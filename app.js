@@ -236,8 +236,8 @@ App = function()
         wade.app.onMouseDown = function()
         {
             wade.clearScene();
-            wade.app.init();
             wade.app.onMouseDown = 0;
+            wade.app.init();
         };
     };
 
