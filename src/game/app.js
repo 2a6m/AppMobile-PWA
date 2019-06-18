@@ -239,7 +239,7 @@ App = function()
             wade.clearScene();
             wade.app.onMouseDown = 0;
 
-            //updateUserHighScore(userId, score)
+            updateUserHighScore(userId, score);
 
             wade.app.init();
         };
