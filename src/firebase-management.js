@@ -14,10 +14,9 @@ firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
 var database = firebase.database();
 
-function writeUserData(userId, name, email, score) {
+function writeUserData(userId, name, score) {
   firebase.database().ref('/players/' + userId).set({
     name: name,
-    email: email,
     highScore : Number(score)
   });
 }
@@ -31,8 +30,8 @@ function getData(){
     snapshot.forEach(function(childSnapshot) {
       var childKey = childSnapshot.key;
       var childData = childSnapshot.val();
-      window.text = window.text + '{ "name":"' + childData["name"] + '", "email":"' +
-      childData["email"] + '", "highScore":"' + childData["highScore"] + '" }';
+      window.text = window.text + '{ "name":"' + childData["name"] +
+      '", "highScore":"' + childData["highScore"] + '" }';
       window.i++;
       if (window.i < window.max) {
         window.text = window.text + ', ';
@@ -43,25 +42,27 @@ function getData(){
 
     // Test display
     console.log(result);
-
     //return result;
   })
 }
 
-function getUserData(userId){
-  firebase.database().ref("/players/" + userId).once("value", function(snapshot) {
-    var Key = snapshot.key;
-    var Data = snapshot.val();
+function getUserData(name){
+  firebase.database().ref("/players").once("value", function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      var Key = childSnapshot.key;
+      var Data = childSnapshot.val();
 
-    // Convert to JSON
-    var text = '{ "user" : [' +
-    '{ "name":"' + Data["name"] + '", "email":"' + Data["email"] + '", "highScore":"' + Data["highScore"] + '" }' +
-    ' ]}';
-    var result = JSON.parse(text);
+      if (name === Data["name"]) {
+        // Convert to JSON
+        window.text = '{ "user" : [' +
+        '{ "name":"' + Data["name"] + '", "highScore":"' + Data["highScore"] + '" }' +
+        ' ]}';
+      }
+    })
+    var result = JSON.parse(window.text);
 
     // Test display
     console.log(result);
-
     //return result;
   })
 }
@@ -75,8 +76,8 @@ function getHighScore(){
     snapshot.forEach(function(childSnapshot) {
       var childKey = childSnapshot.key;
       var childData = childSnapshot.val();
-      window.text = window.text + '{ "name":"' + childData["name"] + '", "email":"' +
-      childData["email"] + '", "highScore":"' + childData["highScore"] + '" }';
+      window.text = window.text + '{ "name":"' + childData["name"] +
+      '", "highScore":"' + childData["highScore"] + '" }';
       window.i++;
       if (window.i < window.max) {
         window.text = window.text + ', ';
@@ -87,26 +88,40 @@ function getHighScore(){
 
     // Test display
     console.log(result);
-
     //return result;
   })
 }
 
-function updateUserHighScore(userId, score) {
-  firebase.database().ref("/players/" + userId).once("value", function(snapshot) {
-    var Key = snapshot.key;
-    var Data = snapshot.val();
-    window.highScore = Data["highScore"];
+function updateUserHighScore(name, score) {
+  firebase.database().ref("/players").once("value", function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      var Key = childSnapshot.key;
+      var Data = childSnapshot.val();
+      if (name === Data["name"]) {
+        window.highScore = Data["highScore"];
+        window.userId = Key;
 
-    // Test if the score is the high score
-    if (score > window.highScore) {
-      firebase.database().ref('/players/' + userId).update({
-        highScore: score
-      });
-    }
+        // Test if the score is the high score
+        if (score > window.highScore) {
+          firebase.database().ref('/players/' + window.userId).update({
+            highScore: score
+          });
+        }
+      }
+    })
   })
 }
 
-function removeUserData(userId) {
-  firebase.database().ref('/players/' + userId).remove();
+function removeUserData(name) {
+  firebase.database().ref("/players").once("value", function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      var Key = childSnapshot.key;
+      var Data = childSnapshot.val();
+
+      if (name === Data["name"]) {
+        window.userId = Key;
+        firebase.database().ref('/players/' + window.userId).remove();
+      }
+    })
+  })
 }
