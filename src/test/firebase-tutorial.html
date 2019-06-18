@@ -18,23 +18,21 @@
     <script type="text/javascript" src="../sw-management.js"></script>
 
     <h1 class="vertical-container">Test of Firebase</h1>
-    <input type="text" placeholder="userId" id="userIdField">
-    <input type="text" placeholder="name" id="nameField">
-    <input type="email" placeholder="email" id="emailField">
-    <input type="text" placeholder="high score" id="highScoreField">
-    <button type="button" onclick='writeUserData(document.getElementById("userIdField").value, document.getElementById("nameField").value, document.getElementById("emailField").value, document.getElementById("highScoreField").value)'>Submit</button>
 
-    <p id="data"></p>
+    </div>
+      <input type="text" placeholder="identifiant" id="idField">
+      <input type="text" placeholder="name" id="nameField">
+      <input type="text" placeholder="high score" id="highScoreField">
+      <button type="button" onclick='writeUserData(document.getElementById("idField").value, document.getElementById("nameField").value, document.getElementById("highScoreField").value)'>Submit</button>
+    </div>
 
-    <button type="button" onclick="getData()">Test getData</button>
-
-    <button type="button" onclick="getUserData(4)">Test getUserData 4</button>
-
-    <button type="button" onclick="removeUserData(6)">Test removeUserData 6</button>
-
-    <button type="button" onclick="updateUserHighScore(5, 5)">Test updateUserHighScore 5</button>
-
-    <button type="button" onclick="getHighScore()">Test getHighScore</button>
+    <div>
+      <button type="button" onclick="getData()">Test getData</button>
+      <button type="button" onclick="getUserData('t01')">Test getUserData t01</button>
+      <button type="button" onclick="removeUserData('t20')">Test removeUserData t20</button>
+      <button type="button" onclick="updateUserHighScore('t01', 10)">Test updateUserHighScore t01</button>
+      <button type="button" onclick="getHighScore()">Test getHighScore</button>
+    </div>
 
   </body>
 </html>
