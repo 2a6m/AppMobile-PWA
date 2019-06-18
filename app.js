@@ -229,7 +229,8 @@ App = function()
 
     this.endGame = function()
     {
-        var scoreText = new TextSprite(score, '40px Verdana', 'white', 'center', 1, 0);
+        var userId = 0;
+        var scoreText = new TextSprite('User : ' + userId + ' | Score : ' + score, '40px Verdana', 'white', 'center', 1, 0);
         var scoreObject = new SceneObject(scoreText);
         scoreObject.addSprite(new TextSprite('YOUR SCORE : ', '40px Verdana', '#040000', 'center', 1, 1), {y: -60});
         wade.addSceneObject(scoreObject);
@@ -237,6 +238,9 @@ App = function()
         {
             wade.clearScene();
             wade.app.onMouseDown = 0;
+
+            //updateUserHighScore(userId, score)
+
             wade.app.init();
         };
     };
