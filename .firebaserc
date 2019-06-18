@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "retro-shooter-am4l-v2"
+  },
+  "targets": {
+    "retro-shooter-am4l-v2": {
+      "hosting": {
+        "ecam-retro-shooter-am4l-v2-home": [
+          "index.html"
+        ],
+        "ecam-retro-shooter-am4l-v2-test": [
+          "firebase-tutorial.html"
+        ]
+      }
+    }
+  }
+}
