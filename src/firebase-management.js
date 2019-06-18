@@ -92,7 +92,7 @@ function getHighScore(){
   })
 }
 
-function updateUserHighScore(userId, score) {
+export function updateUserHighScore(userId, score) {
   firebase.database().ref("/players/" + userId).once("value", function(snapshot) {
     var Key = snapshot.key;
     var Data = snapshot.val();

@@ -1,3 +1,5 @@
+import { db } from '../firebase-management';
+
 App = function()
 {
     var ship;
@@ -9,7 +11,7 @@ App = function()
     var fireRate = 2;
     var lastFireTime = 0;
 
-    this.load  =function()
+    this.load = function()
     {
         wade.loadImage('images/ship-tux.png');
         wade.loadImage('images/ship-cat.png');
@@ -239,7 +241,7 @@ App = function()
             wade.clearScene();
             wade.app.onMouseDown = 0;
 
-            updateUserHighScore(userId, score);
+            db.updateUserHighScore(userId, score);
 
             wade.app.init();
         };
