@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The test page</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="all">
+  </head>
+  <body>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-database.js"></script>
+
+    <script src="firebase-management.js"></script>
+    <script src="sw-management.js"></script>
+
+    <h1 class="vertical-container">Test of Firebase</h1>
+    <input type="text" placeholder="userId" id="userIdField">
+    <input type="text" placeholder="name" id="nameField">
+    <input type="email" placeholder="email" id="emailField">
+    <input type="text" placeholder="high score" id="highScoreField">
+    <button type="button" onclick='writeUserData(document.getElementById("userIdField").value, document.getElementById("nameField").value, document.getElementById("emailField").value, document.getElementById("highScoreField").value)'>Submit</button>
+
+    <p id="data"></p>
+
+    <button type="button" onclick="getData()">Test getData</button>
+
+    <button type="button" onclick="getUserData(4)">Test getUserData 4</button>
+
+    <button type="button" onclick="removeUserData(6)">Test removeUserData 6</button>
+
+    <button type="button" onclick="updateUserHighScore(5, 5)">Test updateUserHighScore 5</button>
+
+    <button type="button" onclick="getHighScore()">Test getHighScore</button>
+
+  </body>
+</html>
