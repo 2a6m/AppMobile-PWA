@@ -1,5 +1,3 @@
-import { db } from '../firebase-management';
-
 App = function()
 {
     var ship;
@@ -241,7 +239,7 @@ App = function()
             wade.clearScene();
             wade.app.onMouseDown = 0;
 
-            db.updateUserHighScore(userId, score);
+            //updateUserHighScore(userId, score);
 
             wade.app.init();
         };
