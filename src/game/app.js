@@ -23,8 +23,12 @@ App = function()
 
     this.init = function()
     {
+        wade.clearScene();
+
         wade.setMinScreenSize(398,708);
         wade.setMaxScreenSize(1920,1080);
+
+        //wade.setFullScreen();
 
         // load highscore (connection db)
         var shooterData = wade.retrieveLocalObject('shooterData');
@@ -93,7 +97,7 @@ App = function()
         var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
         clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
         var clickToStart = new SceneObject(clickText);
-        clickToStart.addSprite(new TextSprite('HIGH SCORE', '40px Verdana', '#040000', 'center'), {y: -240});
+        clickToStart.addSprite(new TextSprite('HIGH SCORES', '40px Verdana', '#040000', 'center'), {y: -240});
         clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -180});
         clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -150});
         clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -120});
@@ -229,20 +233,78 @@ App = function()
 
     this.endGame = function()
     {
+        var alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
         var userId = 0;
-        var scoreText = new TextSprite('User : ' + userId + ' | Score : ' + score, '40px Verdana', 'white', 'center', 1, 0);
+
+        var scoreText = new TextSprite(score, '40px Verdana', 'white', 'center');
         var scoreObject = new SceneObject(scoreText);
-        scoreObject.addSprite(new TextSprite('YOUR SCORE : ', '40px Verdana', '#040000', 'center', 1, 1), {y: -60});
+        scoreObject.addSprite(new TextSprite('YOUR SCORE :', '40px Verdana', '#040000', 'center'), {y: -60});
         wade.addSceneObject(scoreObject);
-        wade.app.onMouseDown = function()
+
+        // letter 1
+        var count_1 = 0;
+        var letter_1 = new TextSprite(alphabet[count_1%26], '60px Verdana', 'white', 'center');
+        var letter_1_object = new SceneObject(letter_1);
+        letter_1_object.setPosition(-80,100);
+
+        letter_1_object.onClick = function()
+        {
+            count_1++;
+            letter_1.setText(alphabet[count_1%26]);
+        }
+
+        wade.addSceneObject(letter_1_object);
+        //wade.addEventListener(letter_1_object, 'onClick');
+
+        // letter 2
+        var count_2 = 0;
+        var letter_2 = new TextSprite(alphabet[count_2%26], '60px Verdana', 'white', 'center');
+        var letter_2_object = new SceneObject(letter_2);
+        letter_2_object.setPosition(0,100);
+
+        letter_2_object.onClick = function()
+        {
+            count_2++;
+            letter_2.setText(alphabet[count_2%26]);
+        }
+
+        wade.addSceneObject(letter_2_object);
+        //wade.addEventListener(letter_2_object, 'onClick');
+
+        // letter 3
+        var count_3 = 0;
+        var letter_3 = new TextSprite(alphabet[count_3%26], '60px Verdana', 'white', 'center');
+        var letter_3_object = new SceneObject(letter_3);
+        letter_3_object.setPosition(80,100);
+
+        letter_3_object.onClick = function()
+        {
+            count_3++;
+            letter_3.setText(alphabet[count_3%26]);
+        }
+
+        wade.addSceneObject(letter_3_object);
+        //wade.addEventListener(letter_3_object, 'onClick');
+
+        // restart
+        var restartSprite = new TextSprite('Restart', '40px Verdana', '#040000', 'center');
+        var restartObject = new SceneObject(restartSprite);
+        restartObject.setPosition(00,200);
+
+        restartObject.onClick = function()
         {
             wade.clearScene();
+
             wade.app.onMouseDown = 0;
 
+            var name = alphabet[letter_1] + alphabet[letter_2] + alphabet[letter_3];
             //updateUserHighScore(userId, score);
 
             wade.app.init();
-        };
+        }
+
+        wade.addSceneObject(restartObject);
+        //wade.addEventListener(restartObject, 'onClick');
     };
 
     this.onMouseMove = function(eventData)
