@@ -1,4 +1,4 @@
-import { db } from '../firebase-management';
+import * from '../firebase-management.js';
 
 App = function()
 {
