@@ -12,33 +12,11 @@
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-database.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#config-web-app -->
-
-     <script>
-      // Your web app's Firebase configuration
-      var firebaseConfig = {
-        apiKey: "AIzaSyAoL2Yay2yWUC4QipHhsoX5CCfMMXsqkbY",
-        authDomain: "retro-shooter-am4l-v2.firebaseapp.com",
-        databaseURL: "https://retro-shooter-am4l-v2.firebaseio.com",
-        projectId: "retro-shooter-am4l-v2",
-        storageBucket: "retro-shooter-am4l-v2.appspot.com",
-        messagingSenderId: "238955078830",
-        appId: "1:238955078830:web:b534872d8edbc45f"
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-    </script>
-
-    <script>
-      if('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-          .then(function() {
-                console.log('Service Worker Registered');
-          });
-      }
-    </script>
+    <script src="firebase-management.js"></script>
+    <script src="sw-management.js"></script>
 
     <h1 class="vertical-container">Welcome to the war, soldier !</h1>
 
