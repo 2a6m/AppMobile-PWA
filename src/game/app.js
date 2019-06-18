@@ -31,15 +31,8 @@ App = function()
         //wade.setFullScreen();
 
         // load highscore (connection db)
-        var shooterData = wade.retrieveLocalObject('shooterData');
-        var highScore = (shooterData && shooterData.highScore) || 0;
-        // database
-        /*
-        this.serverResponse = {};
-        var dataToSend = "This is the data I am sending to the server. It's not much.";
-        var url = 'http://www.example.com/doSomething.php?' + encodeURIComponent(dataToSend);
-        wade.preloadJson(url, this.serverResponse, 0, 1);
-        */
+        //var shooterData = wade.retrieveLocalObject('shooterData');
+        //var highScore = (shooterData && shooterData.highScore) || 0;
 
         // background
         var width = wade.getScreenWidth();
@@ -94,22 +87,42 @@ App = function()
         }
 
         // main menu
-        var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
-        clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
-        var clickToStart = new SceneObject(clickText);
-        clickToStart.addSprite(new TextSprite('HIGH SCORES', '40px Verdana', '#040000', 'center'), {y: -240});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -180});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -150});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -120});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -90});
-        clickToStart.addSprite(new TextSprite('ID  |  ' + highScore, '25px Verdana', '#040000', 'center'), {y: -60});
-        wade.addSceneObject(clickToStart);
-        wade.app.onMouseDown = function()
-        {
-            wade.removeSceneObject(clickToStart);
-            wade.app.startGame();
-            wade.app.onMouseDown = 0;
-        };
+
+        // Get the five best (high score)
+        firebase.database().ref("/players").orderByChild("highScore").limitToLast(5).on("value", function(snapshot) {
+          window.i = 0;
+          window.max = 5;
+          window.text = '{ "users" : ['
+          snapshot.forEach(function(childSnapshot) {
+            var childKey = childSnapshot.key;
+            var childData = childSnapshot.val();
+            window.text = window.text + '{ "name":"' + childData["name"] +
+            '", "highScore":"' + childData["highScore"] + '" }';
+            window.i++;
+            if (window.i < window.max) {
+              window.text = window.text + ', ';
+            }
+          })
+          window.text = window.text + ' ]}';
+          var best = JSON.parse(window.text);
+
+          var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
+          clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
+          var clickToStart = new SceneObject(clickText);
+          clickToStart.addSprite(new TextSprite('HIGH SCORES', '40px Verdana', '#040000', 'center'), {y: -240});
+          clickToStart.addSprite(new TextSprite(best.users[4].name + '  |  ' + best.users[4].highScore, '25px Verdana', '#040000', 'center'), {y: -180});
+          clickToStart.addSprite(new TextSprite(best.users[3].name + '  |  ' + best.users[3].highScore, '25px Verdana', '#040000', 'center'), {y: -150});
+          clickToStart.addSprite(new TextSprite(best.users[2].name + '  |  ' + best.users[2].highScore, '25px Verdana', '#040000', 'center'), {y: -120});
+          clickToStart.addSprite(new TextSprite(best.users[1].name + '  |  ' + best.users[1].highScore, '25px Verdana', '#040000', 'center'), {y: -90});
+          clickToStart.addSprite(new TextSprite(best.users[0].name + '  |  ' + best.users[0].highScore, '25px Verdana', '#040000', 'center'), {y: -60});
+          wade.addSceneObject(clickToStart);
+          wade.app.onMouseDown = function()
+          {
+              wade.removeSceneObject(clickToStart);
+              wade.app.startGame();
+              wade.app.onMouseDown = 0;
+          };
+        })
     };
 
     this.startGame = function()
@@ -297,8 +310,51 @@ App = function()
 
             wade.app.onMouseDown = 0;
 
-            var name = alphabet[letter_1] + alphabet[letter_2] + alphabet[letter_3];
-            //updateUserHighScore(userId, score);
+            var name = alphabet[count_1] + alphabet[count_2] + alphabet[count_3];
+
+            // get user data
+            firebase.database().ref("/players").once("value", function(snapshot) {
+              snapshot.forEach(function(childSnapshot) {
+                var Key = childSnapshot.key;
+                var Data = childSnapshot.val();
+                window.text = "";
+
+                if (name === Data["name"]) {
+                  // Convert to JSON
+                  window.text = '{ "user" : [' +
+                  '{ "name":"' + Data["name"] + '", "highScore":"' + Data["highScore"] + '" }' +
+                  ' ]}';
+                }
+              })
+
+              if (window.text) {
+                firebase.database().ref("/players").once("value", function(snapshot) {
+                  snapshot.forEach(function(childSnapshot) {
+                    var Key = childSnapshot.key;
+                    var Data = childSnapshot.val();
+                    if (name === Data["name"]) {
+                      window.highScore = Data["highScore"];
+                      window.userId = Key;
+
+                      // Test if the score is the high score
+                      if (score > window.highScore) {
+                        firebase.database().ref('/players/' + window.userId).update({
+                          highScore: score
+                        });
+                      }
+                    }
+                  })
+                })
+              } else {
+                firebase.database().ref("/players").once("value", function(snapshot) {
+                  window.max = snapshot.numChildren() + 1;
+                  firebase.database().ref('/players/' + window.max).set({
+                    name: name,
+                    highScore : Number(score)
+                  });
+                })
+              }
+            })
 
             wade.app.init();
         }
