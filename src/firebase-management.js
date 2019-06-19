@@ -14,11 +14,14 @@ firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
 var database = firebase.database();
 
-function writeUserData(userId, name, score) {
-  firebase.database().ref('/players/' + userId).set({
-    name: name,
-    highScore : Number(score)
-  });
+function writeUserData(name, score) {
+  firebase.database().ref("/players").once("value", function(snapshot) {
+    window.max = snapshot.numChildren() + 1;
+    firebase.database().ref('/players/' + window.max).set({
+      name: name,
+      highScore : Number(score)
+    });
+  })
 }
 
 function getData(){
@@ -38,11 +41,11 @@ function getData(){
       }
     })
     window.text = window.text + ' ]}';
-    var result = JSON.parse(text);
+    var result = JSON.parse(window.text);
 
     // Test display
-    console.log(result);
-    //return result;
+    // console.log(result);
+    return result; //  KO: return undefined outside of the function
   })
 }
 
@@ -62,13 +65,13 @@ function getUserData(name){
     var result = JSON.parse(window.text);
 
     // Test display
-    console.log(result);
-    //return result;
+    // console.log(result);
+    return result; // KO: return undefined outside of the function
   })
 }
 
 function getHighScore(){
-  // Get the fives best
+  // Get the five best
   firebase.database().ref("/players").orderByChild("highScore").limitToLast(5).on("value", function(snapshot) {
     window.i = 0;
     window.max = 5;
@@ -84,11 +87,11 @@ function getHighScore(){
       }
     })
     window.text = window.text + ' ]}';
-    var result = JSON.parse(text);
+    var result = JSON.parse(window.text);
 
     // Test display
-    console.log(result);
-    //return result;
+    // console.log(result);
+    return result; //  KO: return undefined outside of the function
   })
 }
 
