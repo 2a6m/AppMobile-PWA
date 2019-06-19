@@ -19,15 +19,18 @@ App = function()
         wade.loadImage('images/light-beam.png');
         wade.loadImage('images/crying-cat.png');
 
-        wade.loadAudio('sounds/meow.wav');
+        wade.loadAudio('sounds/meow.aac');
+        wade.loadAudio('sounds/meow.ogg');
+        wade.loadAudio('sounds/fart.aac');
+        wade.loadAudio('sounds/fart.ogg');
+        wade.loadAudio('sounds/oh-no.aac');
+        wade.loadAudio('sounds/oh-no.ogg');
     };
 
     this.init = function()
     {
         wade.setMinScreenSize(398,708);
         wade.setMaxScreenSize(1920,1080);
-
-        //wade.setFullScreen();
 
         // background
         var width = wade.getScreenWidth();
@@ -57,9 +60,10 @@ App = function()
         var backObject = new SceneObject(backSprite);
         wade.addSceneObject(backObject);
 
-        var text = new TextSprite('blabla et adibou', '40px Verdana', 'white', 'center');
-       // clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
-        var initScene = new SceneObject(text);
+        var text = "A long time ago,\nin the World Wide Web,\ncats appeared\neverywhere.\nIn this game,\n you can enter in\nthe final battle and play\na legendary warrior:\nTUX.\nHelp the world\nto get rid of these\ncatty memes !"
+        var show = new TextSprite(text, '40px Verdana', 'white', 'center');
+        var initScene = new SceneObject(show);
+        initScene.setPosition(0, -wade.getScreenHeight()/2.65);
 
         wade.addSceneObject(initScene);
 
@@ -73,12 +77,10 @@ App = function()
 
     this.menu = function()
     {
+        wade.setLoadingImages('/images/load.jpg');
         wade.clearScene();
-
         wade.setMinScreenSize(398,708);
         wade.setMaxScreenSize(1920,1080);
-
-        //wade.setFullScreen();
 
         // background
         var width = wade.getScreenWidth();
@@ -233,9 +235,8 @@ App = function()
                         var position = colliders[j].getPosition();
                         wade.app.explosion(position);
 
-                        // bug to fix (play no sound)
                         // sound
-                        //wade.getAudio('sounds/meow.wav').play();
+                        wade.playAudio('sounds/meow.ogg');
 
                         // score
                         score += 10;
@@ -258,6 +259,9 @@ App = function()
             {
                 if (overlapping[i].isEnemy || overlapping[i].isEnemyBullet)
                 {
+
+                    wade.playAudio('sounds/oh-no.ogg');
+
                     //explosionSprite
                     wade.app.explosion(ship.getPosition());
                     wade.removeSceneObject(ship);
@@ -303,14 +307,14 @@ App = function()
         var alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
         var userId = 0;
 
-        var scoreText = new TextSprite(score, '40px Verdana', 'white', 'center');
+        var scoreText = new TextSprite(score, '40px Verdana', 'white', 'center',1,0);
         var scoreObject = new SceneObject(scoreText);
-        scoreObject.addSprite(new TextSprite('YOUR SCORE :', '40px Verdana', '#040000', 'center'), {y: -60});
+        scoreObject.addSprite(new TextSprite('YOUR SCORE :', '40px Verdana', '#040000', 'center',1,0), {y: -60});
         wade.addSceneObject(scoreObject);
 
         // letter 1
         var count_1 = 0;
-        var letter_1 = new TextSprite(alphabet[count_1%26], '60px Verdana', 'white', 'center');
+        var letter_1 = new TextSprite(alphabet[count_1%26], '60px Verdana', 'yellow', 'center',1,0);
         var letter_1_object = new SceneObject(letter_1);
         letter_1_object.setPosition(-80,100);
 
@@ -325,7 +329,7 @@ App = function()
 
         // letter 2
         var count_2 = 0;
-        var letter_2 = new TextSprite(alphabet[count_2%26], '60px Verdana', 'white', 'center');
+        var letter_2 = new TextSprite(alphabet[count_2%26], '60px Verdana', 'yellow', 'center',1,0);
         var letter_2_object = new SceneObject(letter_2);
         letter_2_object.setPosition(0,100);
 
@@ -340,7 +344,7 @@ App = function()
 
         // letter 3
         var count_3 = 0;
-        var letter_3 = new TextSprite(alphabet[count_3%26], '60px Verdana', 'white', 'center');
+        var letter_3 = new TextSprite(alphabet[count_3%26], '60px Verdana', 'yellow', 'center',1,0);
         var letter_3_object = new SceneObject(letter_3);
         letter_3_object.setPosition(80,100);
 
@@ -354,7 +358,7 @@ App = function()
         //wade.addEventListener(letter_3_object, 'onClick');
 
         // restart
-        var restartSprite = new TextSprite('Restart', '40px Verdana', '#040000', 'center');
+        var restartSprite = new TextSprite('Restart', '40px Verdana', '#040000', 'center',1,0);
         var restartObject = new SceneObject(restartSprite);
         restartObject.setPosition(00,200);
 
@@ -479,6 +483,7 @@ App = function()
             wade.addSceneObject(bullet);
             bullet.isEnemyBullet = true;
             bullet.moveTo(endX, endY, 200);
+            wade.playAudio('sounds/fart.ogg');
 
             // delete bullet when it's finished moving
             bullet.onMoveComplete = function()
