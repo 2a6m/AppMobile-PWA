@@ -1,6 +1,7 @@
 # AppMobile-PWA : Retro Shooter
 
-This project was realized by Bourguignon Maxime and Simon Christophe.
+This project was realized by Bourguignon Maxime and Simon Christophe.\
+We both use a Debian based Linux environment.
 
 ## Introduction
 
@@ -54,22 +55,37 @@ When you hit an enemy or enemy's droppings, you die and go to the endGame state.
 This state is the end state.
 You can see the score of your game. You need to set your trigram to save your score in the database.
 
+You can click on restart and back to the menu state or quit the application.
+
 ## Development
 
-### Deployment
+According to the request, we had to write a service worker to register the interesting files in the cache and a manifest to be able to download the application on a smartphone.
 
 ### Libraries and dependencies
 
-To develop our PWA retro shooter, we configured a database with firebase and we used a framework to have game's physics called wade.
+To develop our PWA retro shooter, we configured firebase and we used a framework called wade.
 
-## Firebase
+#### Firebase
 
-## Wade
+We use Firebase services for two parts of our project:
 
-Wade is a framework to develop game in javascript. It has a library to create elements and manipulate them easily.
+- To host our web app;
+- To save the users data (trigram and high score).
+
+##### The hosting
+
+Blabla
+
+##### The database
+
+Blabla
+
+#### Wade
+
+Wade is a framework to develop games in JavaScript. It has a library to create elements and to manipulate them easily.
 
 ### Credits
 
-the images come from wikipedia, imgur, pngtree, pixabay.\
-the sounds come from soundbible.\
-the documentation and the tutorials for wade come from clockworkchilli.
+The images come from wikipedia, imgur, pngtree, pixabay.\
+The sounds come from soundbible.\
+The documentation and the tutorials for wade come from clockworkchilli.
