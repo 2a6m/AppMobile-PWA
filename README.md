@@ -66,6 +66,8 @@ To develop our PWA retro shooter, we configured a database with firebase and we 
 
 ## Wade
 
+Wade is a framework to develop game in javascript. It has a library to create elements and manipulate them easily.
+
 ### Credits
 
 the images come from wikipedia, imgur, pngtree, pixabay.\
