@@ -63,7 +63,7 @@ According to the request, we had to write a service worker to register the inter
 
 ### Libraries and dependencies
 
-To develop our PWA retro shooter, we configured firebase and we used a framework called wade.
+To develop our PWA retro shooter, we configured Firebase and we used a framework called Wade.
 
 #### Firebase
 
@@ -74,11 +74,17 @@ We use Firebase services for two parts of our project:
 
 ##### The hosting
 
-Blabla
+We configured a project named retro-shooter-am4l-v2 as a single web page app.
+The useful scripts are included in the 'index.html' page.
+The script 'app.js' (which is responsible for Wade) is called from this page.
 
 ##### The database
 
-Blabla
+In the Firebase project, we configured a "real time" database. The "real time" notion is not useful in our case but it was a successful investigation. The app saves the id of the player as the number of players in the database plus one. Inside this id, the name and the high score is registered.\
+
+If the user is not in the database, he is created with is trigram and his high score.\
+
+If the user is yet saved in the database, his high score is updated only if his recent score is greater than the previous high score.
 
 #### Wade
 
