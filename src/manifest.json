@@ -1,8 +1,8 @@
 {
-  "name": "retro-shooter-am4l-v2",
-  "short_name": "rsav2",
-  "theme_color": "#6E0B14",
-  "background_color": "#6E0B14",
+  "name": "Retro Shooter",
+  "short_name": "Tux & Cie",
+  "theme_color": "#11314A",
+  "background_color": "#11314A",
   "display": "standalone",
   "Scope": "/",
   "start_url": "/index.html",
