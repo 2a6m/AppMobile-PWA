@@ -155,8 +155,6 @@ App = function()
               window.text = window.text + ' ]}';
               var best = JSON.parse(window.text);
 
-              console.log(best);
-
               var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
              // clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
               var clickToStart = new SceneObject(clickText);
