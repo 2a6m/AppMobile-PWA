@@ -8,6 +8,7 @@ App = function()
     var score;
     var fireRate = 2;
     var lastFireTime = 0;
+    window.state = 0;
 
     this.load = function()
     {
@@ -64,6 +65,7 @@ App = function()
 
         wade.app.onMouseDown = function()
         {
+            window.state = 1;
             wade.app.menu();
             wade.app.onMouseDown = 0;
         };
@@ -134,44 +136,48 @@ App = function()
 
         // Get the five best (high score)
         firebase.database().ref("/players").orderByChild("highScore").limitToLast(5).on("value", function(snapshot) {
-          window.i = 0;
-          window.max = 5;
-          window.children = snapshot.numChildren();
-          window.text = '{ "users" : ['
-          snapshot.forEach(function(childSnapshot) {
-            var childKey = childSnapshot.key;
-            var childData = childSnapshot.val();
-            window.text = window.text + '{ "name":"' + childData["name"] +
-            '", "highScore":"' + childData["highScore"] + '" }';
-            window.i++;
-            if (window.i < window.max && window.i < window.children) {
-              window.text = window.text + ', ';
-            }
-          })
-          window.text = window.text + ' ]}';
-          var best = JSON.parse(window.text);
-
-          console.log(best);
-
-          var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
-         // clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
-          var clickToStart = new SceneObject(clickText);
-
-          clickToStart.addSprite(new TextSprite('HIGH SCORES', '40px Verdana', '#040000', 'center'), {y: -240});
-          var espace = -60;
-          best.users.forEach(function(childbest) {
-              clickToStart.addSprite(new TextSprite(childbest.name + '  |  ' + childbest.highScore, '25px Verdana', '#040000', 'center'), {y: espace});
-              espace = espace - 30;
-          })
-
-          wade.addSceneObject(clickToStart);
-
-          wade.app.onMouseDown = function()
+          if (window.state == 1)
           {
-              wade.removeSceneObject(clickToStart);
-              wade.app.startGame();
-              wade.app.onMouseDown = 0;
-          };
+              window.i = 0;
+              window.max = 5;
+              window.children = snapshot.numChildren();
+              window.text = '{ "users" : ['
+              snapshot.forEach(function(childSnapshot) {
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                window.text = window.text + '{ "name":"' + childData["name"] +
+                '", "highScore":"' + childData["highScore"] + '" }';
+                window.i++;
+                if (window.i < window.max && window.i < window.children) {
+                  window.text = window.text + ', ';
+                }
+              })
+              window.text = window.text + ' ]}';
+              var best = JSON.parse(window.text);
+
+              console.log(best);
+
+              var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
+             // clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
+              var clickToStart = new SceneObject(clickText);
+
+              clickToStart.addSprite(new TextSprite('HIGH SCORES', '40px Verdana', '#040000', 'center'), {y: -240});
+              var espace = -60;
+              best.users.forEach(function(childbest) {
+                  clickToStart.addSprite(new TextSprite(childbest.name + '  |  ' + childbest.highScore, '25px Verdana', '#040000', 'center'), {y: espace});
+                  espace = espace - 30;
+              })
+
+              wade.addSceneObject(clickToStart);
+              window.state = 0;
+
+              wade.app.onMouseDown = function()
+              {
+                  wade.removeSceneObject(clickToStart);
+                  wade.app.startGame();
+                  wade.app.onMouseDown = 0;
+              };
+          }
         })
     };
 
@@ -403,6 +409,7 @@ App = function()
               }
             })
 
+            window.state = 1;
             wade.app.menu();
         }
 
