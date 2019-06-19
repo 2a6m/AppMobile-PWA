@@ -273,15 +273,6 @@ App = function()
                     var shooterData = wade.retrieveLocalObject('shooterData');
                     var highScore = (shooterData && shooterData.highScore) || 0;
 
-                    // database
-                    /*
-                    this.serverResponse = {};
-                    var object = shooterData;
-                    var dataToSend = "This is the data I am sending to the server. It's not much.";
-                    var url = 'http://www.example.com/doSomething.php?' + encodeURIComponent(dataToSend);
-                    wade.postObject(url, object, this.onServerResponse_());
-                    */
-
                     if (score > highScore)
                     {
                         shooterData = {highScore: score};
