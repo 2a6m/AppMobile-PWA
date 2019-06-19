@@ -24,6 +24,35 @@ After you died, you can save your score and hope to be in the player's top five 
 
 ### Application principles
 
+The game has four states. the init, the menu, the startGame and the endGame.
+
+<p align="center">
+<img src="./diagrams/StateMachine.png">
+</p>
+<p align="center">State diagram UML</p>
+
+#### init state
+
+This state is a preview page to receive an immersive introduction to the game.
+When you click, your go to the next state, the menu state.
+
+#### menu state
+
+This state show the high scores. We load the five highest score in the game's database.
+When you're ready, click on the page to play the game on the next sate, the startGame state.
+
+#### startGame state
+
+This state is the playable state.
+Enemy pop recursively and shoot at a rate depending your current score.
+
+When you it a enemy or enemy's bullet, you die and go to the endGame state.
+
+#### endGame state
+
+This state is the end state.
+You see the score of your game. You need to set your trigram to save to your score in the database.
+
 ## Development
 
 ### Deployment
