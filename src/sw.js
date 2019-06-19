@@ -11,11 +11,7 @@ self.oninstall = event => {
                 "/style.css",
                 "/index.html",
                 "/app.js",
-                "/manifest.json",
-                "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css",
-                "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js",
-                "https://fonts.googleapis.com/icon?family=Material+Icons",
-                "https://fonts.gstatic.com/s/materialicons/v43/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2"
+                "/manifest.json"
             ])
         })
     )
