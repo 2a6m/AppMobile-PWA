@@ -19,7 +19,12 @@ App = function()
         wade.loadImage('images/light-beam.png');
         wade.loadImage('images/crying-cat.png');
 
-        wade.loadAudio('sounds/meow.wav');
+        wade.loadAudio('sounds/meow.aac');
+        wade.loadAudio('sounds/meow.ogg');
+        wade.loadAudio('sounds/fart.aac');
+        wade.loadAudio('sounds/fart.ogg');
+        wade.loadAudio('sounds/oh-no.aac');
+        wade.loadAudio('sounds/oh-no.ogg');
     };
 
     this.init = function()
@@ -65,6 +70,8 @@ App = function()
 
         wade.app.onMouseDown = function()
         {
+            wade.setFullScreen();
+
             window.state = 1;
             wade.app.menu();
             wade.app.onMouseDown = 0;
@@ -73,6 +80,8 @@ App = function()
 
     this.menu = function()
     {
+        wade.setLoadingImages('/images/load.jpg');
+
         wade.clearScene();
 
         wade.setMinScreenSize(398,708);
@@ -233,9 +242,8 @@ App = function()
                         var position = colliders[j].getPosition();
                         wade.app.explosion(position);
 
-                        // bug to fix (play no sound)
                         // sound
-                        //wade.getAudio('sounds/meow.wav').play();
+                        wade.playAudio('sounds/meow.ogg');
 
                         // score
                         score += 10;
@@ -258,6 +266,9 @@ App = function()
             {
                 if (overlapping[i].isEnemy || overlapping[i].isEnemyBullet)
                 {
+
+                    wade.playAudio('sounds/oh-no.ogg');
+
                     //explosionSprite
                     wade.app.explosion(ship.getPosition());
                     wade.removeSceneObject(ship);
@@ -479,6 +490,7 @@ App = function()
             wade.addSceneObject(bullet);
             bullet.isEnemyBullet = true;
             bullet.moveTo(endX, endY, 200);
+            wade.playAudio('sounds/fart.ogg');
 
             // delete bullet when it's finished moving
             bullet.onMoveComplete = function()
