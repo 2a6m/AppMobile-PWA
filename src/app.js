@@ -60,13 +60,14 @@ App = function()
         var backObject = new SceneObject(backSprite);
         wade.addSceneObject(backObject);
 
+        // intro text
         var text = "A long time ago,\nin the World Wide Web,\ncats appeared\neverywhere.\nIn this game,\n you can enter in\nthe final battle and play\na legendary warrior:\nTUX.\nHelp the world\nto get rid of these\ncatty memes !"
         var show = new TextSprite(text, '40px Verdana', 'white', 'center');
         var initScene = new SceneObject(show);
         initScene.setPosition(0, -wade.getScreenHeight()/2.65);
-
         wade.addSceneObject(initScene);
 
+        // event listener
         wade.app.onMouseDown = function()
         {
             window.state = 1;
@@ -77,7 +78,6 @@ App = function()
 
     this.menu = function()
     {
-        wade.setLoadingImages('/images/load.jpg');
         wade.clearScene();
         wade.setMinScreenSize(398,708);
         wade.setMaxScreenSize(1920,1080);
@@ -136,6 +136,7 @@ App = function()
 
         // main menu
 
+        // highscore
         // Get the five best (high score)
         firebase.database().ref("/players").orderByChild("highScore").limitToLast(5).on("value", function(snapshot) {
           if (window.state == 1)
@@ -158,19 +159,20 @@ App = function()
               var best = JSON.parse(window.text);
 
               var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
-             // clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
               var clickToStart = new SceneObject(clickText);
 
+              // draw highscore
               clickToStart.addSprite(new TextSprite('HIGH SCORES', '40px Verdana', '#040000', 'center'), {y: -240});
-              var espace = -60;
+              var space = -60;
               best.users.forEach(function(childbest) {
-                  clickToStart.addSprite(new TextSprite(childbest.name + '  |  ' + childbest.highScore, '25px Verdana', '#040000', 'center'), {y: espace});
+                  clickToStart.addSprite(new TextSprite(childbest.name + '  |  ' + childbest.highScore, '25px Verdana', '#040000', 'center'), {y: space});
                   espace = espace - 30;
               })
 
               wade.addSceneObject(clickToStart);
               window.state = 0;
 
+              // listener
               wade.app.onMouseDown = function()
               {
                   wade.removeSceneObject(clickToStart);
@@ -202,9 +204,10 @@ App = function()
         wade.setMainLoopCallback(function()
         {
             // code to execute several times per second
-            // (time % rate == 0)
             var nextFireTime = lastFireTime + 1 / fireRate;
             var time = wade.getAppTime();
+
+            // tux fire
             if (wade.isMouseDown() && time >= nextFireTime)
             {
                 lastFireTime = time;
@@ -259,32 +262,21 @@ App = function()
             {
                 if (overlapping[i].isEnemy || overlapping[i].isEnemyBullet)
                 {
-
+                    // play audio
                     wade.playAudio('sounds/oh-no.ogg');
 
-                    //explosionSprite
+                    // explosionSprite
                     wade.app.explosion(ship.getPosition());
                     wade.removeSceneObject(ship);
+
                     // remove functions
                     wade.setMainLoopCallback(null, 'fire');
                     wade.setMainLoopCallback(null, 'die');
 
-                    // highscore (connection db)
-                    var shooterData = wade.retrieveLocalObject('shooterData');
-                    var highScore = (shooterData && shooterData.highScore) || 0;
-
-                    if (score > highScore)
-                    {
-                        shooterData = {highScore: score};
-                        wade.storeLocalObject('shooterData', shooterData);
-                    }
-
-                    // !! here exit game / return to menu !!
+                    // end game
                     setTimeout(function()
                     {
-                        //wade.clearScene();
                         clearTimeout(nextEnemy);
-                        // go back to menu
                         wade.app.endGame();
                     }, 2000);
                 }
@@ -296,7 +288,6 @@ App = function()
     this.endGame = function()
     {
         var alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-        var userId = 0;
 
         var scoreText = new TextSprite(score, '40px Verdana', 'white', 'center',1,0);
         var scoreObject = new SceneObject(scoreText);
@@ -309,6 +300,7 @@ App = function()
         var letter_1_object = new SceneObject(letter_1);
         letter_1_object.setPosition(-80,100);
 
+        // listener
         letter_1_object.onClick = function()
         {
             count_1++;
@@ -324,6 +316,7 @@ App = function()
         var letter_2_object = new SceneObject(letter_2);
         letter_2_object.setPosition(0,100);
 
+        // listener
         letter_2_object.onClick = function()
         {
             count_2++;
@@ -339,6 +332,7 @@ App = function()
         var letter_3_object = new SceneObject(letter_3);
         letter_3_object.setPosition(80,100);
 
+        // listener
         letter_3_object.onClick = function()
         {
             count_3++;
@@ -353,10 +347,10 @@ App = function()
         var restartObject = new SceneObject(restartSprite);
         restartObject.setPosition(00,200);
 
+        // listener
         restartObject.onClick = function()
         {
             wade.clearScene();
-
             wade.app.onMouseDown = 0;
 
             var name = alphabet[count_1%26] + alphabet[count_2%26] + alphabet[count_3%26];
@@ -402,6 +396,7 @@ App = function()
               }
             })
 
+            // return menu
             window.state = 1;
             wade.app.menu();
         }
@@ -412,7 +407,7 @@ App = function()
 
     this.onMouseMove = function(eventData)
     {
-        ship.setPosition(eventData.screenPosition.x, eventData.screenPosition.y);
+        ship && ship.setPosition(eventData.screenPosition.x, eventData.screenPosition.y);
     };
 
     this.spawnEnemy = function()
