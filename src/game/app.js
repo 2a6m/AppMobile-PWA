@@ -30,10 +30,6 @@ App = function()
 
         //wade.setFullScreen();
 
-        // load highscore (connection db)
-        //var shooterData = wade.retrieveLocalObject('shooterData');
-        //var highScore = (shooterData && shooterData.highScore) || 0;
-
         // background
         var width = wade.getScreenWidth();
         var height = wade.getScreenHeight();
@@ -106,16 +102,21 @@ App = function()
           window.text = window.text + ' ]}';
           var best = JSON.parse(window.text);
 
+          console.log(best);
+
           var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
-          clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
+         // clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
           var clickToStart = new SceneObject(clickText);
+
           clickToStart.addSprite(new TextSprite('HIGH SCORES', '40px Verdana', '#040000', 'center'), {y: -240});
-          clickToStart.addSprite(new TextSprite(best.users[4].name + '  |  ' + best.users[4].highScore, '25px Verdana', '#040000', 'center'), {y: -180});
-          clickToStart.addSprite(new TextSprite(best.users[3].name + '  |  ' + best.users[3].highScore, '25px Verdana', '#040000', 'center'), {y: -150});
-          clickToStart.addSprite(new TextSprite(best.users[2].name + '  |  ' + best.users[2].highScore, '25px Verdana', '#040000', 'center'), {y: -120});
-          clickToStart.addSprite(new TextSprite(best.users[1].name + '  |  ' + best.users[1].highScore, '25px Verdana', '#040000', 'center'), {y: -90});
-          clickToStart.addSprite(new TextSprite(best.users[0].name + '  |  ' + best.users[0].highScore, '25px Verdana', '#040000', 'center'), {y: -60});
+          var espace = -60;
+          best.users.forEach(function(childbest) {
+              clickToStart.addSprite(new TextSprite(childbest.name + '  |  ' + childbest.highScore, '25px Verdana', '#040000', 'center'), {y: espace});
+              espace = espace - 30;
+          })
+
           wade.addSceneObject(clickToStart);
+
           wade.app.onMouseDown = function()
           {
               wade.removeSceneObject(clickToStart);
