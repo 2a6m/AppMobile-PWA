@@ -33,7 +33,14 @@
       var database = firebase.database();
     </script>
 
-    <script type="text/javascript" src="sw-management.js"></script>
+    <script>
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+        .then(function() {
+          console.log('Service Worker Registered');
+        });
+      }
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function()
