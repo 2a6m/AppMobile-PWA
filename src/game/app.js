@@ -23,16 +23,60 @@ App = function()
 
     this.init = function()
     {
+        wade.setMinScreenSize(398,708);
+        wade.setMaxScreenSize(1920,1080);
+
+        //wade.setFullScreen();
+
+        // background
+        var width = wade.getScreenWidth();
+        var height = wade.getScreenHeight();
+        var ratio = width/height;
+        // phone
+        if (ratio <= 0.4)
+        {
+            var backSprite = new Sprite('images/galaxy-wallpaper-phone.jpg', 10);
+            backSprite.setSize(width, height);
+        }
+        // tablet
+        else if (ratio <= 1.5)
+        {
+            var backSprite = new Sprite('images/galaxy-wallpaper-tablet.jpg', 10);
+            backSprite.setSize(width, height);
+        }
+        // laptop
+        else if (ratio <= 3)
+        {
+            var backSprite = new Sprite('images/galaxy-wallpaper.jpg', 10);
+            backSprite.setSize(width, height);
+        }
+        else {
+            var backSprite = new Sprite('images/galaxy-wallpaper.jpg', 10);
+        }
+        var backObject = new SceneObject(backSprite);
+        wade.addSceneObject(backObject);
+
+        var text = new TextSprite('blabla et adibou', '40px Verdana', 'white', 'center');
+       // clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
+        var initScene = new SceneObject(text);
+
+        wade.addSceneObject(initScene);
+
+        wade.app.onMouseDown = function()
+        {
+            wade.app.menu();
+            wade.app.onMouseDown = 0;
+        };
+    }
+
+    this.menu = function()
+    {
         wade.clearScene();
 
         wade.setMinScreenSize(398,708);
         wade.setMaxScreenSize(1920,1080);
 
         //wade.setFullScreen();
-
-        // load highscore (connection db)
-        //var shooterData = wade.retrieveLocalObject('shooterData');
-        //var highScore = (shooterData && shooterData.highScore) || 0;
 
         // background
         var width = wade.getScreenWidth();
@@ -92,6 +136,7 @@ App = function()
         firebase.database().ref("/players").orderByChild("highScore").limitToLast(5).on("value", function(snapshot) {
           window.i = 0;
           window.max = 5;
+          window.children = snapshot.numChildren();
           window.text = '{ "users" : ['
           snapshot.forEach(function(childSnapshot) {
             var childKey = childSnapshot.key;
@@ -99,23 +144,28 @@ App = function()
             window.text = window.text + '{ "name":"' + childData["name"] +
             '", "highScore":"' + childData["highScore"] + '" }';
             window.i++;
-            if (window.i < window.max) {
+            if (window.i < window.max && window.i < window.children) {
               window.text = window.text + ', ';
             }
           })
           window.text = window.text + ' ]}';
           var best = JSON.parse(window.text);
 
+          console.log(best);
+
           var clickText = new TextSprite('Click or tap to start', '40px Verdana', 'white', 'center');
-          clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
+         // clickText.setDrawFunction(wade.drawFunctions.blink_(0.5, 0.5, clickText.draw));
           var clickToStart = new SceneObject(clickText);
+
           clickToStart.addSprite(new TextSprite('HIGH SCORES', '40px Verdana', '#040000', 'center'), {y: -240});
-          clickToStart.addSprite(new TextSprite(best.users[4].name + '  |  ' + best.users[4].highScore, '25px Verdana', '#040000', 'center'), {y: -180});
-          clickToStart.addSprite(new TextSprite(best.users[3].name + '  |  ' + best.users[3].highScore, '25px Verdana', '#040000', 'center'), {y: -150});
-          clickToStart.addSprite(new TextSprite(best.users[2].name + '  |  ' + best.users[2].highScore, '25px Verdana', '#040000', 'center'), {y: -120});
-          clickToStart.addSprite(new TextSprite(best.users[1].name + '  |  ' + best.users[1].highScore, '25px Verdana', '#040000', 'center'), {y: -90});
-          clickToStart.addSprite(new TextSprite(best.users[0].name + '  |  ' + best.users[0].highScore, '25px Verdana', '#040000', 'center'), {y: -60});
+          var espace = -60;
+          best.users.forEach(function(childbest) {
+              clickToStart.addSprite(new TextSprite(childbest.name + '  |  ' + childbest.highScore, '25px Verdana', '#040000', 'center'), {y: espace});
+              espace = espace - 30;
+          })
+
           wade.addSceneObject(clickToStart);
+
           wade.app.onMouseDown = function()
           {
               wade.removeSceneObject(clickToStart);
@@ -310,24 +360,21 @@ App = function()
 
             wade.app.onMouseDown = 0;
 
-            var name = alphabet[count_1] + alphabet[count_2] + alphabet[count_3];
+            var name = alphabet[count_1%26] + alphabet[count_2%26] + alphabet[count_3%26];
 
             // get user data
+            window.text = "";
             firebase.database().ref("/players").once("value", function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
                 var Key = childSnapshot.key;
                 var Data = childSnapshot.val();
-                window.text = "";
 
                 if (name === Data["name"]) {
-                  // Convert to JSON
-                  window.text = '{ "user" : [' +
-                  '{ "name":"' + Data["name"] + '", "highScore":"' + Data["highScore"] + '" }' +
-                  ' ]}';
+                  window.text = "find";
                 }
               })
 
-              if (window.text) {
+              if (window.text === "find") {
                 firebase.database().ref("/players").once("value", function(snapshot) {
                   snapshot.forEach(function(childSnapshot) {
                     var Key = childSnapshot.key;
@@ -356,7 +403,7 @@ App = function()
               }
             })
 
-            wade.app.init();
+            wade.app.menu();
         }
 
         wade.addSceneObject(restartObject);
