@@ -13,18 +13,19 @@ For challenge and discovery, we opted for the PWA.
 
 ## Game
 
-The link to play to our funniest and our most enjoyable retro shooter game: https://retro-shooter-am4l-v2.firebaseapp.com/
+The link to play to our funniest and most enjoyable retro shooter game is:\
+https://retro-shooter-am4l-v2.firebaseapp.com/
 
 ### How to play
 
-Tux follow your finger or your mouse (if you play it on a computer).\
-To shoot, you must keep your finger (or mouse) down.
+Tux follows your finger or your mouse (if you play on a computer).\
+To shoot, you must keep your finger (or mouse) down. You earn 10 points for each enemy you eliminate.
 
-After you died, you can save your score and hope to be in the player's top five by setting your trigram on the displayed letters.
+After you died (hit by a droppings or feline), you can save your score and hope to be in the player's top five by setting your trigram on the displayed letters.
 
 ### Application principles
 
-The game has four states. the init, the menu, the startGame and the endGame.
+The game has four states: init, menu, startGame and endGame.
 
 <p align="center">
 <img src="./diagrams/StateMachine.png">
@@ -34,24 +35,24 @@ The game has four states. the init, the menu, the startGame and the endGame.
 #### init state
 
 This state is a preview page to receive an immersive introduction to the game.
-When you click, your go to the next state, the menu state.
+When you click on it, you go to the next state, the menu.
 
 #### menu state
 
-This state show the high scores. We load the five highest score in the game's database.
-When you're ready, click on the page to play the game on the next sate, the startGame state.
+This state shows the high scores. We load the five highest scores in the game's database.
+When you're ready, you can click on the page to play, the startGame state.
 
 #### startGame state
 
 This state is the playable state.
-Enemy pop recursively and shoot at a rate depending your current score.
+Enemies pop recursively and shoot at a rate depending on your current score.
 
-When you it a enemy or enemy's bullet, you die and go to the endGame state.
+When you hit an enemy or enemy's droppings, you die and go to the endGame state.
 
 #### endGame state
 
 This state is the end state.
-You see the score of your game. You need to set your trigram to save to your score in the database.
+You can see the score of your game. You need to set your trigram to save your score in the database.
 
 ## Development
 
