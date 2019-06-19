@@ -23,6 +23,15 @@ App = function()
 
     this.init = function()
     {
+        wade.app.onMouseDown = function()
+        {
+            wade.app.menu();
+            wade.app.onMouseDown = 0;
+        };
+    }
+
+    this.menu = function()
+    {
         wade.clearScene();
 
         wade.setMinScreenSize(398,708);
@@ -88,6 +97,7 @@ App = function()
         firebase.database().ref("/players").orderByChild("highScore").limitToLast(5).on("value", function(snapshot) {
           window.i = 0;
           window.max = 5;
+          window.children = snapshot.numChildren();
           window.text = '{ "users" : ['
           snapshot.forEach(function(childSnapshot) {
             var childKey = childSnapshot.key;
@@ -95,7 +105,7 @@ App = function()
             window.text = window.text + '{ "name":"' + childData["name"] +
             '", "highScore":"' + childData["highScore"] + '" }';
             window.i++;
-            if (window.i < window.max) {
+            if (window.i < window.max && window.i < window.children) {
               window.text = window.text + ', ';
             }
           })
@@ -311,24 +321,21 @@ App = function()
 
             wade.app.onMouseDown = 0;
 
-            var name = alphabet[count_1] + alphabet[count_2] + alphabet[count_3];
+            var name = alphabet[count_1%26] + alphabet[count_2%26] + alphabet[count_3%26];
 
             // get user data
+            window.text = "";
             firebase.database().ref("/players").once("value", function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
                 var Key = childSnapshot.key;
                 var Data = childSnapshot.val();
-                window.text = "";
 
                 if (name === Data["name"]) {
-                  // Convert to JSON
-                  window.text = '{ "user" : [' +
-                  '{ "name":"' + Data["name"] + '", "highScore":"' + Data["highScore"] + '" }' +
-                  ' ]}';
+                  window.text = "find";
                 }
               })
 
-              if (window.text) {
+              if (window.text === "find") {
                 firebase.database().ref("/players").once("value", function(snapshot) {
                   snapshot.forEach(function(childSnapshot) {
                     var Key = childSnapshot.key;
@@ -357,7 +364,7 @@ App = function()
               }
             })
 
-            wade.app.init();
+            wade.app.menu();
         }
 
         wade.addSceneObject(restartObject);
