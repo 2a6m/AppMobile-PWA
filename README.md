@@ -46,7 +46,7 @@ When you're ready, you can click on the page to play, the startGame state.
 #### startGame state
 
 This state is the playable state.
-Enemies pop recursively and shoot at a rate depending on your current score.
+Enemies pop recursively and have a shooting rate depending on your current score.
 
 When you hit an enemy or enemy's droppings, you die and go to the endGame state.
 
@@ -82,7 +82,7 @@ Blabla
 
 #### Wade
 
-Wade is a framework to develop games in JavaScript. It has a library to create elements and to manipulate them easily.
+Wade is a framework to develop games in JavaScript. It has a library to create sprites and to manipulate them easily.
 
 ### Credits
 
