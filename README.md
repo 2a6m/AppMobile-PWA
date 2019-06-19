@@ -1,6 +1,13 @@
 # AppMobile-PWA : Retro Shooter
+This project was realized by Bourguignon Maxime and Simon Christophe.
 
 ## Introduction
+For the mobile applications course (AM4L), we had to make a retro shooter. Two choices were possible:
+
+- A native Android App;
+- A Progressive Web App.
+
+For challenge and discovery, we opted for the PWA.
 
 ## Game
 
