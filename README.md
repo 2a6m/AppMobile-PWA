@@ -71,6 +71,15 @@ We use Firebase services for two parts of our project:
 - To host our web app;
 - To save the users data (trigram and high score).
 
+To configure Firebase:
+```
+npm install -g firebase-tools
+firebase login
+firebase init
+firebase deploy
+```
+You need to include the SDK key related to your project inside your html file.
+
 ##### The hosting
 
 We configured a project named retro-shooter-am4l-v2 as a single web page app.
@@ -82,6 +91,8 @@ The script 'app.js' (which is responsible for Wade) is called from this page.
 In the Firebase project, we configured a "real time" database. The "real time" notion is not useful in our case but it was a successful investigation. The app saves the id of the player as the number of players in the database plus one. Inside this id, the name and the high score is registered.\
 If the user is not in the database, he is created with his trigram and high score.\
 If the user is yet saved in the database, his high score is updated only if his recent score is greater than the previous.
+
+We use the API to manage our database "hosted" by Firebase.
 
 #### Wade
 

@@ -166,7 +166,7 @@ App = function()
               var space = -60;
               best.users.forEach(function(childbest) {
                   clickToStart.addSprite(new TextSprite(childbest.name + '  |  ' + childbest.highScore, '25px Verdana', '#040000', 'center'), {y: space});
-                  espace = espace - 30;
+                  space = space - 30;
               })
 
               wade.addSceneObject(clickToStart);
